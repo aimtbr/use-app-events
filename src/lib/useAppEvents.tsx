@@ -9,7 +9,7 @@ type UseAppEventsProps = {
   debug?: boolean;
 };
 
-/** Manage events throughout the app. */
+/** Hook for managing application events. */
 export function useAppEvents<EventType extends string>(
   props?: UseAppEventsProps
 ): UseAppEventsReturn<EventType> {

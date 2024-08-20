@@ -1,12 +1,5 @@
 {
-  "compilerOptions": {
-    "lib": ["ESNext"],
-    "composite": true,
-    "declarationDir": "dist",
-    "emitDeclarationOnly": true,
-    "jsx": "react-jsx"
-  },
-  "files": ["./src/main.ts"],
+  "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

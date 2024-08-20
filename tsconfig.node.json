@@ -10,10 +10,7 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "declarationDir": "dist",
-    "composite": true,
-    "emitDeclarationOnly": true,
-    "jsx": "react-jsx",
+    "noEmit": true,
 
     /* Linting */
     "strict": true,

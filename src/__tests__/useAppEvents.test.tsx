@@ -1,4 +1,4 @@
-import { useAppEvents } from '$lib/useAppEvents';
+import { useAppEvents } from '$lib';
 import { renderHook, screen } from '@testing-library/react';
 
 beforeAll(() => {

@@ -1,10 +1,25 @@
 import path from 'path';
+import { rename } from 'fs/promises';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    dts({
+      tsconfigPath: path.resolve(__dirname, './tsconfig.app.json'),
+      include: ['src'],
+      exclude: ['src/__tests__', 'src/examples', 'src/vite-env.d.ts'],
+      rollupTypes: true,
+      insertTypesEntry: true,
+      copyDtsFiles: true,
+      afterBuild: () => {
+        void rename('./dist/index.d.ts', './dist/use-app-events.d.ts');
+      },
+    }),
+  ],
   resolve: {
     alias: [
       {
@@ -31,7 +46,6 @@ export default defineConfig({
       },
     },
   },
-  // TODO: modify build options
   server: { port: 8080, host: true },
 });
 
