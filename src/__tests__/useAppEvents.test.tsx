@@ -1,14 +1,10 @@
 import { useAppEvents } from '$lib';
-import { renderHook, screen } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 
 enum EventType {
   A = 'event-a',
   B = 'event-b',
 }
-
-beforeAll(() => {
-  screen.debug();
-});
 
 describe('useAppEvents', () => {
   test('Send an event', () => {

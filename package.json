@@ -19,9 +19,10 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "pnpm lint && tsc -b && vite build",
+    "build": "pnpm test && pnpm lint && tsc -b && vite build",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --collectCoverage"
   },
   "peerDependencies": {
     "react": "^18.3.x",

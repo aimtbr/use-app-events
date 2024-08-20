@@ -1,4 +1,4 @@
-import { EventType } from '$examples/constants';
+import { EventType } from 'examples/constants';
 import { useAppEvents } from '$lib/useAppEvents';
 import { useState } from 'react';
 
