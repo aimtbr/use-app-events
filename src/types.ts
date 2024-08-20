@@ -16,8 +16,9 @@ export type UseAppEventsReturn<Type extends string> = {
   /** Subscribe and listen for the specified event type to occur in the app. */
   listenForEvents: <Payload>(
     eventType: Type,
-    callback: Callback<Payload>
+    callback: Callback<Payload | void>
   ) => void;
+
   /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-  notifyEventListeners: (eventType: Type, payload: unknown) => void;
+  notifyEventListeners: <Payload>(eventType: Type, payload: Payload) => void;
 };

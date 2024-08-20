@@ -1,10 +1,9 @@
 {
   "name": "use-app-events",
   "author": "Maksym Marchuk",
-  "private": true,
-  "main": "./dist/use-app-events.umd.cjs",
   "module": "./dist/use-app-events.js",
-  "version": "0.0.0",
+  "main": "./dist/use-app-events.umd.cjs",
+  "version": "1.0.0",
   "type": "module",
   "engines": {
     "node": ">=22.2.0"

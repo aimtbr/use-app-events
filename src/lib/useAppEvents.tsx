@@ -52,7 +52,7 @@ export function useAppEvents<EventType extends string>(
         const isDuplicateListener = duplicateListenerIndex !== -1;
         if (isDuplicateListener) {
           debugMessage(
-            `[SUBSCRIPTION](instance ${instanceId}) Re-subscribed for the ${eventType} event type.`,
+            `[SUBSCRIPTION](instance ${instanceId}) Re-subscribed for the "${eventType}" event type.`,
             debug
           );
 
@@ -65,7 +65,7 @@ export function useAppEvents<EventType extends string>(
         // 2.1 If the listener is unique (non-duplicate), add it right away.
         if (!isDuplicateListener) {
           debugMessage(
-            `[SUBSCRIPTION](instance ${instanceId}) Subscribed for the ${eventType} event type.`,
+            `[SUBSCRIPTION](instance ${instanceId}) Subscribed for the "${eventType}" event type.`,
             debug
           );
 

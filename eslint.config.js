@@ -8,7 +8,6 @@ import react from 'eslint-plugin-react';
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    // Set the react version
     settings: { react: { version: '18.3' } },
     extends: [
       js.configs.recommended,
@@ -19,7 +18,7 @@ export default tseslint.config(
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ['./tsconfig.vite.json', './tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
