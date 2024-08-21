@@ -5,7 +5,9 @@ Global communication between components/hooks in React.
 ✉️ Send an event containing payload from one component/hook to another.  
 📩 Listen for events of a specific type to occur and process the sent payload.
 
-### Install
+<br/>
+
+## Install
 
 **npm**
 
@@ -21,7 +23,7 @@ pnpm add use-app-events
 
 <br/>
 
-### TypeScript
+## TypeScript
 
 - It is recommended to have a list of event types that can be used in your app, for example, enum called `EventType`, and pass it to `useAppEvents()` for type safety and misprint-proof:
   ![EventType passed to useAppEvents as a type](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-1.png)
@@ -50,7 +52,7 @@ pnpm add use-app-events
 
 <br/>
 
-### Usage example
+## Usage example
 
 **Shared hook state**  
 The example below represents a potential implementation of a simple `useVolume` hook, which allows managing a volume from any component of the app.
@@ -85,7 +87,7 @@ const useVolume = () => {
 
 <br/>
 
-### Motivation
+## Motivation
 
 Usually, it was recommended to use `React context` to manage the global state of the app without "prop drilling".
 
@@ -95,7 +97,7 @@ However, as the app grows, the number of `contexts` increases accordingly and pa
 
 <br/>
 
-### License
+## License
 
 MIT
 

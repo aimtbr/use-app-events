@@ -1,6 +1,6 @@
 {
   "name": "use-app-events",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Maksym Marchuk",
   "license": "MIT",
   "module": "./dist/use-app-events.js",
