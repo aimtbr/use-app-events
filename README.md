@@ -2,7 +2,7 @@
 
 Global communication between components/hooks in React.
 
-✉️ Send an event containing payload from one component/hook to another.
+✉️ Send an event containing payload from one component/hook to another.  
 📩 Listen for events of a specific type to occur and process the sent payload.
 
 ### Install
