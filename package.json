@@ -1,9 +1,10 @@
 {
   "name": "use-app-events",
   "author": "Maksym Marchuk",
+  "license": "MIT",
   "module": "./dist/use-app-events.js",
   "main": "./dist/use-app-events.umd.cjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "engines": {
     "node": ">=22.2.0"
