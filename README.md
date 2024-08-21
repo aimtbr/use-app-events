@@ -25,16 +25,26 @@ pnpm add use-app-events
 
 - It is recommended to have a list of event types that can be used in your app, for example, enum called `EventType`, and pass it to `useAppEvents()` for type safety and misprint-proof:
   ![EventType passed to useAppEvents as a type](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-1.png)
+
   <br/>
+
   <ins>This way you are protected from the unexpected event types...</ins>
+
   <br/>
+
   ![Unacceptable type passed as the event type to listenForEvents](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-2.png)
+
   <br/>
+
   <ins>...and only allowed to use the expected ones.</ins>
+
   <br/>
+
   ![The expected allowed event type passed to listenForEvents](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-3.png)
   ![The expected allowed event type passed to notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-4.png)
+
   <br/>
+
 - However, if `EventType` is not provided, any `string` or `enum` can be used:
   ![Plain string passed as the event type to listenForEvents and notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-5.png)
 
@@ -45,7 +55,7 @@ pnpm add use-app-events
 **Shared hook state**  
 The example below represents a potential implementation of a simple `useVolume` hook, which allows managing a volume from any component of the app.
 
-**[[See full source code]](https://github.com/aimtbr/use-app-events/blob/main/examples/shared-hook-state/SharedHookState.tsx)**
+**[[ See full source code ]](https://github.com/aimtbr/use-app-events/blob/main/examples/shared-hook-state/SharedHookState.tsx)**
 
 ```tsx
 const useVolume = () => {
