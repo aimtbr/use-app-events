@@ -1,22 +1,13 @@
 {
   "name": "use-app-events",
+  "version": "1.0.2",
   "author": "Maksym Marchuk",
   "license": "MIT",
   "module": "./dist/use-app-events.js",
   "main": "./dist/use-app-events.umd.cjs",
-  "version": "1.0.1",
   "type": "module",
   "engines": {
     "node": ">=22.2.0"
-  },
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "import": "./dist/use-app-events.js",
-      "require": "./dist/use-app-events.umd.cjs"
-    }
   },
   "scripts": {
     "dev": "vite",
@@ -25,6 +16,7 @@
     "test": "jest",
     "coverage": "jest --collectCoverage"
   },
+  "repository": "github:aimtbr/use-app-events",
   "peerDependencies": {
     "react": "^18.3.x",
     "react-dom": "^18.3.x"
@@ -57,6 +49,15 @@
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
     "vite-plugin-dts": "^4.0.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/use-app-events.js",
+      "require": "./dist/use-app-events.umd.cjs"
+    }
   }
 }
 

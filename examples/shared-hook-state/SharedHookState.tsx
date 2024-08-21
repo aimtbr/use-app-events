@@ -9,21 +9,19 @@ import { useState } from 'react';
 const useVolume = () => {
   const [volume, setVolume] = useState<number>(100);
 
-  const { notifyEventListeners, listenForEvents } = useAppEvents({
-    debug: true,
-  });
+  const { notifyEventListeners, listenForEvents } = useAppEvents<EventType>();
 
-  // If any other instance of the useVolume hook has its volume state updated
+  // 1. If any other instance of the useVolume hook has its volume state updated
   listenForEvents(EventType.VOLUME_CHANGE, (volumeNext: number) => {
-    // synchronize the volume value of this instance, with a new one
+    // 1.1. Synchronize the volume value of this instance, with a new one
     setVolume(volumeNext);
   });
 
   const updateVolume = (volumeNext: number) => {
     setVolume(volumeNext);
 
-    // Notify all other useVolume hook instances about the changed volume value
-    notifyEventListeners(EventType.VOLUME_CHANGE, volumeNext);
+    // 2. Notify all other useVolume hook instances about the changed volume value
+    notifyEventListeners(EventType.SYNC_DATA, volumeNext);
   };
 
   return {
