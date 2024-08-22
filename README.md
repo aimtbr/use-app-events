@@ -3,7 +3,7 @@
 Global communication between components/hooks in React.
 
 ✉️ Send an event containing payload from one component/hook to another.  
-📩 Listen for events of a specific type to occur and process the sent payload.
+📩 Listen for events of a specific type to occur and process the received payload.
 
 <br/>
 
@@ -11,13 +11,13 @@ Global communication between components/hooks in React.
 
 **npm**
 
-```
+```bash
 npm install use-app-events
 ```
 
 **pnpm**
 
-```
+```bash
 pnpm add use-app-events
 ```
 
@@ -52,14 +52,18 @@ pnpm add use-app-events
 
 <br/>
 
-## Usage example
+## Examples
 
 **Shared hook state**  
-The example below represents a potential implementation of a simple `useVolume` hook, which allows managing a volume from any component of the app.
+The example below demonstrates a potential implementation of a simple `useVolume` hook, which allows managing a volume from any component of the app.
 
-**[[ See full source code ]](https://github.com/aimtbr/use-app-events/blob/main/examples/shared-hook-state/SharedHookState.tsx)**
+**[[See full source code]](https://github.com/aimtbr/use-app-events/blob/main/examples/shared-hook-state)**
 
 ```tsx
+enum EventType {
+  VOLUME_CHANGE = 'volume-change',
+}
+
 const useVolume = () => {
   const [volume, setVolume] = useState<number>(100);
 
@@ -87,6 +91,70 @@ const useVolume = () => {
 
 <br/>
 
+**Communication between components**  
+The example below demonstrates the potential use of useAppEvents to exchange messages (events) between unrelated components.  
+
+Note: this is a simplified example, click the link below to see the full one if needed.
+
+**[[See full source code]](https://github.com/aimtbr/use-app-events/blob/main/examples/global-communication)**
+
+```tsx
+enum EventType {
+  KEVIN_FOLLOWERS = 'kevin-followers',
+  JOHN_RELATIVES = 'john-relatives',
+}
+
+const GlobalCommunication = () => {
+  return (
+    <>
+      <h2>Global Communication</h2>
+
+      <SisterComponent />
+      <BrotherComponent />
+    </>
+  );
+};
+
+function SisterComponent() {
+  const { listenForEvents } = useAppEvents<EventType>();
+
+  // Listen for events of type KEVIN_FOLLOWERS
+  listenForEvents(EventType.KEVIN_FOLLOWERS, (messageNext: string) => {
+    // process a message from Kevin...
+  });
+
+  // Listen for events of type JOHN_RELATIVES
+  listenForEvents(EventType.JOHN_RELATIVES, (messageNext: string) => {
+    // process a message from John
+  });
+
+  return null;
+}
+
+function BrotherComponent() {
+  const { notifyEventListeners } = useAppEvents<EventType>();
+
+  // Send an event to the listeners of event JOHN_RELATIVES (Sister is listening)
+  notifyEventListeners(
+    EventType.JOHN_RELATIVES,
+    "Hello everyone, let's meet tomorrow!"
+  );
+
+  return <BrotherChildComponent />;
+}
+
+function BrotherChildComponent() {
+  const { notifyEventListeners } = useAppEvents<EventType>();
+
+  // Send an event to the listeners of event KEVIN_FOLLOWERS (Sister is listening)
+  notifyEventListeners(EventType.KEVIN_FOLLOWERS, "Hey, it's Kevin!");
+
+  return null;
+}
+```
+
+<br/>
+
 ## Motivation
 
 Usually, it was recommended to use `React context` to manage the global state of the app without "prop drilling".
@@ -94,6 +162,24 @@ Usually, it was recommended to use `React context` to manage the global state of
 However, as the app grows, the number of `contexts` increases accordingly and partially ruins the readability and usability of your app.
 
 <ins>So, the motivation</ins> to create `use-app-events` was to find a way to share and manage the state from any part of the app (globally) and allow all components to communicate with each other regardless of their position in the tree.
+
+<br/>
+
+## Try it yourself
+
+Clone the [repository](https://github.com/aimtbr/use-app-events), install dependencies, and run the `dev` script to start a web app and play around with examples.
+
+**pnpm**
+
+```bash
+git clone https://github.com/aimtbr/use-app-events.git && cd use-app-events && pnpm install && pnpm dev
+```
+
+**npm**
+
+```bash
+git clone https://github.com/aimtbr/use-app-events.git && cd use-app-events && npm install && npm run dev
+```
 
 <br/>
 
