@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useId } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Listener, UseAppEventsReturn } from '$types';
-import { debugMessage } from '$utils';
+import { debugMessage, generateId } from '$utils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let eventListeners: Listener<any>[] = [];
@@ -10,14 +10,19 @@ type UseAppEventsProps = {
 };
 
 /** Hook for managing application events. */
-export function useAppEvents<EventType extends string>(
+function useAppEvents<EventType extends string>(
   props?: UseAppEventsProps
 ): UseAppEventsReturn<EventType> {
   const { debug = false } = props ?? {};
 
-  const instanceId = useId();
+  const instanceId = useMemo(() => generateId(), []);
 
   useEffect(() => {
+    debugMessage(
+      `[INIT](instance ${instanceId}) Created a new useAppEvents hook instance.`,
+      debug
+    );
+
     /** Removes listeners created by this instance from `eventListeners`. */
     const removeInstanceListeners = () => {
       eventListeners = eventListeners.filter(
@@ -97,3 +102,5 @@ export function useAppEvents<EventType extends string>(
     notifyEventListeners,
   };
 }
+
+export default useAppEvents;

@@ -1,9 +1,9 @@
-import { EventType } from 'examples/constants';
-import { useAppEvents } from '$lib/useAppEvents';
+import { EventType } from '../constants';
+import { useAppEvents } from '$lib';
 import { useState } from 'react';
 
 /**
- * The example describes the potential implementation of the useVolume hook,
+ * The example below demonstrates the potential implementation of the useVolume hook,
  * which allows managing a volume from any component of the app.
  */
 const useVolume = () => {
@@ -21,7 +21,7 @@ const useVolume = () => {
     setVolume(volumeNext);
 
     // 2. Notify all other useVolume hook instances about the changed volume value
-    notifyEventListeners(EventType.SYNC_DATA, volumeNext);
+    notifyEventListeners(EventType.VOLUME_CHANGE, volumeNext);
   };
 
   return {
@@ -38,12 +38,13 @@ const useVolume = () => {
  */
 export const SharedHookStateParent = () => {
   return (
-    <>
-      <h2>Shared hook state</h2>
+    <div style={{ border: '1px solid lightgray', padding: '3rem' }}>
+      <h2>Shared Hook State</h2>
+      <hr />
 
       <SharedHookStateSister />
       <SharedHookStateBrother />
-    </>
+    </div>
   );
 };
 

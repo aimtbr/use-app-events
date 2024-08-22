@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "author": "Maksym Marchuk",
   "license": "MIT",
+  "description": "Global communication between components/hooks in React.",
   "module": "./dist/use-app-events.js",
   "main": "./dist/use-app-events.umd.cjs",
   "type": "module",
@@ -58,6 +59,17 @@
       "import": "./dist/use-app-events.js",
       "require": "./dist/use-app-events.umd.cjs"
     }
-  }
+  },
+  "keywords": [
+    "react",
+    "global",
+    "send",
+    "receive",
+    "event",
+    "message",
+    "communication",
+    "hook",
+    "context"
+  ]
 }
 
