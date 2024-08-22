@@ -54,47 +54,59 @@ pnpm add use-app-events
 
 ## Examples
 
-**Shared hook state**  
-The example below demonstrates a potential implementation of a simple `useVolume` hook, which allows managing a volume from any component of the app.
+**[[See all examples]](https://github.com/aimtbr/use-app-events/blob/main/examples)**
 
-**[[See full source code]](https://github.com/aimtbr/use-app-events/blob/main/examples/shared-hook-state)**
+**1. Global theme state**  
+The example below demonstrates a potential implementation of the `useTheme` hook, which allows managing a theme from any component of the app.
 
 ```tsx
 enum EventType {
-  VOLUME_CHANGE = 'volume-change',
+  UPDATE_THEME = 'update-theme',
 }
 
-const useVolume = () => {
-  const [volume, setVolume] = useState<number>(100);
+const useTheme = () => {
+  const [theme, setTheme] = useState('dark');
 
   const { notifyEventListeners, listenForEvents } = useAppEvents<EventType>();
 
-  // 1. If any other instance of the useVolume hook has its volume state updated
-  listenForEvents(EventType.VOLUME_CHANGE, (volumeNext: number) => {
-    // 1.1. Synchronize the volume value of this instance, with a new one
-    setVolume(volumeNext);
+  // 1. If any other instance of the useTheme hook has its theme value updated
+  listenForEvents(EventType.UPDATE_THEME, (themeNext: string) => {
+    // 1.1. Synchronize the theme value of this instance, with a new one
+    setTheme(themeNext);
   });
 
-  const updateVolume = (volumeNext: number) => {
-    setVolume(volumeNext);
+  const updateTheme = (themeNext: string) => {
+    setTheme(themeNext);
 
-    // 2. Notify all other useVolume hook instances about the changed volume value
-    notifyEventListeners(EventType.VOLUME_CHANGE, volumeNext);
+    // 2. Notify all other useTheme hook instances about the changed value
+    notifyEventListeners(EventType.UPDATE_THEME, themeNext);
   };
 
   return {
-    volume,
-    updateVolume,
+    theme,
+    updateTheme,
   };
+};
+
+// Then use the useTheme hook anywhere in the app to get and update its value globally
+const App = () => {
+  const { theme, updateTheme } = useTheme();
+
+  updateTheme('light');
+
+  // Output: <div>Current theme: light</div>
+  return <div>Current theme: {theme}</div>;
 };
 ```
 
+---
+
 <br/>
 
-**Communication between components**  
-The example below demonstrates the potential use of useAppEvents to exchange messages (events) between unrelated components.  
+**2. Communication between components**  
+The example below demonstrates the potential use of useAppEvents to exchange messages (events) between unrelated components.
 
-Note: this is a simplified example, click the link below to see the full one if needed.
+_Note: this is a simplified example, click the link below to see the full one if needed._
 
 **[[See full source code]](https://github.com/aimtbr/use-app-events/blob/main/examples/global-communication)**
 
