@@ -134,7 +134,10 @@ describe('useAppEvents', () => {
   });
 
   test('Enable debug mode', async () => {
-    const mockDebugMessage = jest.spyOn(await import('$utils'), 'debugMessage');
+    const mockDebugMessage = jest.spyOn(
+      await import('$utils/debugMessage'),
+      'default'
+    );
 
     const instance = renderHook(() => useAppEvents<EventType>({ debug: true }));
 
@@ -149,7 +152,7 @@ describe('useAppEvents', () => {
     // 5. Unmount the hook
     instance.unmount();
 
-    expect(mockDebugMessage).toHaveBeenCalledTimes(4);
+    expect(mockDebugMessage).toHaveBeenCalledTimes(5);
 
     jest.restoreAllMocks();
   });

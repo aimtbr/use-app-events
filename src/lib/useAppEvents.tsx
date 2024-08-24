@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { Listener, UseAppEventsReturn } from '$types';
 import { debugMessage, generateId } from '$utils';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let eventListeners: Listener<any>[] = [];
+import heap from '$heap';
 
 type UseAppEventsProps = {
   debug?: boolean;
@@ -15,86 +13,150 @@ function useAppEvents<EventType extends string>(
 ): UseAppEventsReturn<EventType> {
   const { debug = false } = props ?? {};
 
-  const instanceId = useMemo(() => generateId(), []);
+  const callerId = useMemo(() => generateId(), []);
 
   useEffect(() => {
     debugMessage(
-      `[INIT](instance ${instanceId}) Created a new useAppEvents hook instance.`,
+      `[INIT](instance ${callerId}) Created a new useAppEvents hook instance.`,
       debug
     );
 
     /** Removes listeners created by this instance from `eventListeners`. */
     const removeInstanceListeners = () => {
-      eventListeners = eventListeners.filter(
-        (listener) => listener.instanceId !== instanceId
+      heap.eventListeners = heap.eventListeners.filter(
+        (listener) => listener.callerId !== callerId
       );
     };
 
     return () => {
       debugMessage(
-        `[CLEANUP](instance ${instanceId}) Destroyed the useAppEvents hook instance.`,
+        `[CLEANUP](instance ${callerId}) Destroyed the useAppEvents hook instance.`,
         debug
       );
 
       removeInstanceListeners();
     };
-  }, [instanceId]);
+  }, [callerId]);
 
   const listenForEvents: UseAppEventsReturn<EventType>['listenForEvents'] =
     useCallback(
-      (eventType, callback) => {
-        // 1. Find an old duplicate listener
-        const duplicateListenerIndex = eventListeners.findIndex(
-          (listener) =>
-            listener.instanceId === instanceId &&
-            listener.eventType === eventType &&
-            listener.callback.toString() === callback.toString()
-        );
+      (eventTypeOrGroup, callback) => {
+        let eventGroup: EventType[];
 
-        const newListener = { eventType, callback, instanceId };
-
-        // 2. If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).
-        const isDuplicateListener = duplicateListenerIndex !== -1;
-        if (isDuplicateListener) {
-          debugMessage(
-            `[SUBSCRIPTION](instance ${instanceId}) Re-subscribed for the "${eventType}" event type.`,
-            debug
-          );
-
-          eventListeners = eventListeners.with(
-            duplicateListenerIndex,
-            newListener
-          );
+        const isEventGroup = Array.isArray(eventTypeOrGroup);
+        // 1. If eventTypeOrGroup is not an array (not a group), make it a group
+        if (isEventGroup) {
+          eventGroup = eventTypeOrGroup;
+        } else {
+          eventGroup = [eventTypeOrGroup];
         }
 
-        // 2.1 If the listener is unique (non-duplicate), add it right away.
-        if (!isDuplicateListener) {
-          debugMessage(
-            `[SUBSCRIPTION](instance ${instanceId}) Subscribed for the "${eventType}" event type.`,
-            debug
+        eventGroup.forEach((eventType) => {
+          // 1.1 Find an old duplicate listener
+          const duplicateListenerIndex = heap.eventListeners.findIndex(
+            (listener) =>
+              listener.callerId === callerId &&
+              listener.eventType === eventType &&
+              listener.callback.toString() === callback.toString()
           );
 
-          eventListeners = [...eventListeners, newListener];
-        }
+          const newListener: Listener<EventType> = {
+            eventType,
+            callback,
+            callerId,
+            isEventGroup,
+          };
+
+          // 1.2 If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).
+          const isDuplicateListener = duplicateListenerIndex !== -1;
+          if (isDuplicateListener) {
+            debugMessage(
+              `[SUBSCRIPTION](instance ${callerId}) Re-subscribed for the "${eventType}" event type.`,
+              debug
+            );
+
+            heap.eventListeners = heap.eventListeners.with(
+              duplicateListenerIndex,
+              newListener
+            );
+          }
+
+          // 1.3 If the listener is unique (non-duplicate), add it right away.
+          if (!isDuplicateListener) {
+            debugMessage(
+              `[SUBSCRIPTION](instance ${callerId}) Subscribed for the "${eventType}" event type.`,
+              debug
+            );
+
+            heap.eventListeners = [...heap.eventListeners, newListener];
+          }
+        });
+
+        // // 2. PROCESS A SINGLE EVENT TYPE
+        // eventType = eventTypeOrGroup;
+
+        // // 2.1 Find an old duplicate listener
+        // const duplicateListenerIndex = heap.eventListeners.findIndex(
+        //   (listener) =>
+        //     listener.callerId === callerId &&
+        //     listener.eventType === eventType &&
+        //     listener.callback.toString() === callback.toString()
+        // );
+
+        // const newListener: Listener<EventType> = {
+        //   eventType,
+        //   callback,
+        //   callerId,
+        // };
+
+        // // 2.2 If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).
+        // const isDuplicateListener = duplicateListenerIndex !== -1;
+        // if (isDuplicateListener) {
+        //   debugMessage(
+        //     `[SUBSCRIPTION](instance ${callerId}) Re-subscribed for the "${eventType}" event type.`,
+        //     debug
+        //   );
+
+        //   heap.eventListeners = heap.eventListeners.with(
+        //     duplicateListenerIndex,
+        //     newListener
+        //   );
+        // }
+
+        // // 2.3 If the listener is unique (non-duplicate), add it right away.
+        // if (!isDuplicateListener) {
+        //   debugMessage(
+        //     `[SUBSCRIPTION](instance ${callerId}) Subscribed for the "${eventType}" event type.`,
+        //     debug
+        //   );
+
+        //   heap.eventListeners = [...heap.eventListeners, newListener];
+        // }
       },
-      [instanceId]
+      [callerId]
     );
 
   const notifyEventListeners: UseAppEventsReturn<EventType>['notifyEventListeners'] =
     useCallback(
       (eventType, payload) => {
         debugMessage(
-          `[EVENT-OCCURRED](instance ${instanceId}) Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
+          `[EVENT-OCCURRED](instance ${callerId}) Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
           debug
         );
 
-        eventListeners.forEach((listener) => {
+        // Notify the listeners of the specified event type
+        heap.eventListeners.forEach((listener) => {
           if (listener.eventType === eventType) {
+            // If the listener is a part of event group (listenForEvents called with an array)
+            if (listener.isEventGroup) {
+              return listener.callback(eventType, payload);
+            }
+
             listener.callback(payload);
           }
         });
       },
-      [instanceId]
+      [callerId]
     );
 
   return {
