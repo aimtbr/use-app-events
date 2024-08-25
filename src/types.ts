@@ -23,7 +23,7 @@ export type UseAppEventsReturn<Type extends string> = {
   listenForEvents<Payload>(
     this: void,
     eventType: Type,
-    callback: Callback<unknown> | Callback<Payload>
+    callback: Callback<void> | Callback<Payload>
   ): void;
 
   // Overload 2
@@ -34,5 +34,5 @@ export type UseAppEventsReturn<Type extends string> = {
   ): void;
 
   /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-  notifyEventListeners: <Payload>(eventType: Type, payload: Payload) => void;
+  notifyEventListeners: <Payload>(eventType: Type, payload?: Payload) => void;
 };

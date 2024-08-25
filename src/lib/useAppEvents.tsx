@@ -4,7 +4,7 @@ import { debugMessage, generateId } from '$utils';
 import heap from '$heap';
 
 type UseAppEventsProps = {
-  debug?: boolean;
+  debug: boolean;
 };
 
 /** Hook for managing application events. */
@@ -91,47 +91,6 @@ function useAppEvents<EventType extends string>(
             heap.eventListeners = [...heap.eventListeners, newListener];
           }
         });
-
-        // // 2. PROCESS A SINGLE EVENT TYPE
-        // eventType = eventTypeOrGroup;
-
-        // // 2.1 Find an old duplicate listener
-        // const duplicateListenerIndex = heap.eventListeners.findIndex(
-        //   (listener) =>
-        //     listener.callerId === callerId &&
-        //     listener.eventType === eventType &&
-        //     listener.callback.toString() === callback.toString()
-        // );
-
-        // const newListener: Listener<EventType> = {
-        //   eventType,
-        //   callback,
-        //   callerId,
-        // };
-
-        // // 2.2 If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).
-        // const isDuplicateListener = duplicateListenerIndex !== -1;
-        // if (isDuplicateListener) {
-        //   debugMessage(
-        //     `[SUBSCRIPTION](instance ${callerId}) Re-subscribed for the "${eventType}" event type.`,
-        //     debug
-        //   );
-
-        //   heap.eventListeners = heap.eventListeners.with(
-        //     duplicateListenerIndex,
-        //     newListener
-        //   );
-        // }
-
-        // // 2.3 If the listener is unique (non-duplicate), add it right away.
-        // if (!isDuplicateListener) {
-        //   debugMessage(
-        //     `[SUBSCRIPTION](instance ${callerId}) Subscribed for the "${eventType}" event type.`,
-        //     debug
-        //   );
-
-        //   heap.eventListeners = [...heap.eventListeners, newListener];
-        // }
       },
       [callerId]
     );
