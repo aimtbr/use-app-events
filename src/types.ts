@@ -18,7 +18,6 @@ export type Callback<P = void, R = void> = P extends void
   : (arg: P) => R;
 
 export type UseAppEventsReturn<Type extends string> = {
-  // Overload 1
   /** Subscribe and listen for the specified event type to occur in the app. */
   listenForEvents<Payload>(
     this: void,
@@ -26,7 +25,7 @@ export type UseAppEventsReturn<Type extends string> = {
     callback: Callback<void> | Callback<Payload>
   ): void;
 
-  // Overload 2
+  /** Subscribe and listen for the specified event types to occur in the app. */
   listenForEvents<Payload>(
     this: void,
     eventGroup: Type[],

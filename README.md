@@ -2,7 +2,7 @@
 
 Global communication between components/hooks in React.
 
-🌍 Organize and manage your global app state via hooks and events.
+🌍 Organize and manage your global app state via hooks and events.  
 ✉️ Send events with a payload from one component/hook to another.  
 📩 Listen for events of a specific type to occur and process the received payload.
 
@@ -28,7 +28,7 @@ pnpm add use-app-events
 
 ```ts
 /** Hook for managing application events. */
-useAppEvents(args): result
+useAppEvents<Type extends string>(args): result
   - args?: { debug: boolean }
       /** When true, enables a debug mode in non-production environment. */
       debug: boolean;
@@ -36,19 +36,22 @@ useAppEvents(args): result
   - result: { notifyEventListeners: Function, listenForEvents: Function }
 
       /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-      function notifyEventListeners<Payload>(eventType: Type, payload: Payload): void;
+      function notifyEventListeners<Payload>(
+        eventType: Type,
+        payload: Payload
+      ): void;
 
       /** [Overload 1] Subscribe and listen for the specified event type to occur in the app. */
       function listenForEvents<Payload>(
-      eventType: Type, // single event type
-      callback: Callback<void> | Callback<Payload>
-    ): void;
+        eventType: Type, // single event type
+        callback: Callback<void> | Callback<Payload>
+      ): void;
 
       /** [Overload 2] Subscribe and listen for the specified event types to occur in the app. */
       function listenForEvents<Payload>(
-      eventGroup: Type[], // multiple event types
-      callback: Callback<Type> | Callback<[Type, Payload]>
-    ): void;
+        eventGroup: Type[], // multiple event types
+        callback: Callback<Type> | Callback<[Type, Payload]>
+      ): void;
 
 ```
 
