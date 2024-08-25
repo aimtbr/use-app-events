@@ -12,6 +12,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "prod": "vite --mode production",
     "build": "pnpm test && pnpm lint && tsc -b && vite build",
     "lint": "eslint .",
     "test": "jest",

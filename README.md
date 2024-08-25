@@ -2,7 +2,8 @@
 
 Global communication between components/hooks in React.
 
-✉️ Send an event containing payload from one component/hook to another.  
+🌍 Organize and manage your global app state via hooks and events.
+✉️ Send events with a payload from one component/hook to another.  
 📩 Listen for events of a specific type to occur and process the received payload.
 
 <br/>
@@ -19,6 +20,36 @@ npm install use-app-events
 
 ```bash
 pnpm add use-app-events
+```
+
+<br/>
+
+## API
+
+```ts
+/** Hook for managing application events. */
+useAppEvents(args): result
+  - args?: { debug: boolean }
+      /** When true, enables a debug mode in non-production environment. */
+      debug: boolean;
+
+  - result: { notifyEventListeners: Function, listenForEvents: Function }
+
+      /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
+      function notifyEventListeners<Payload>(eventType: Type, payload: Payload): void;
+
+      /** [Overload 1] Subscribe and listen for the specified event type to occur in the app. */
+      function listenForEvents<Payload>(
+      eventType: Type, // single event type
+      callback: Callback<void> | Callback<Payload>
+    ): void;
+
+      /** [Overload 2] Subscribe and listen for the specified event types to occur in the app. */
+      function listenForEvents<Payload>(
+      eventGroup: Type[], // multiple event types
+      callback: Callback<Type> | Callback<[Type, Payload]>
+    ): void;
+
 ```
 
 <br/>
@@ -57,11 +88,11 @@ pnpm add use-app-events
 **[[See all examples]](https://github.com/aimtbr/use-app-events/blob/main/examples)**
 
 **1. Global theme state**  
-The example below demonstrates a potential implementation of the `useTheme` hook, which allows managing a theme from any component of the app.
+The example below demonstrates a potential implementation of the `useTheme` hook, which allows getting and updating a theme from any component of the app.
 
 ```tsx
 enum EventType {
-  UPDATE_THEME = 'update-theme',
+  THEME_UPDATE = 'theme-update',
 }
 
 const useTheme = () => {
@@ -70,7 +101,7 @@ const useTheme = () => {
   const { notifyEventListeners, listenForEvents } = useAppEvents<EventType>();
 
   // 1. If any other instance of the useTheme hook has its theme value updated
-  listenForEvents(EventType.UPDATE_THEME, (themeNext: string) => {
+  listenForEvents(EventType.THEME_UPDATE, (themeNext: string) => {
     // 1.1. Synchronize the theme value of this instance, with a new one
     setTheme(themeNext);
   });
@@ -79,7 +110,7 @@ const useTheme = () => {
     setTheme(themeNext);
 
     // 2. Notify all other useTheme hook instances about the changed value
-    notifyEventListeners(EventType.UPDATE_THEME, themeNext);
+    notifyEventListeners(EventType.THEME_UPDATE, themeNext);
   };
 
   return {
@@ -104,7 +135,7 @@ const App = () => {
 <br/>
 
 **2. Communication between components**  
-The example below demonstrates the potential use of useAppEvents to exchange messages (events) between unrelated components.
+The example below demonstrates the potential use of `useAppEvents` to exchange messages (events) between unrelated components.
 
 _Note: this is a simplified example, click the link below to see the full one if needed._
 
