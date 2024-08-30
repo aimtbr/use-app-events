@@ -1,6 +1,6 @@
 # use-app-events
 
-Global communication between components/hooks in React.
+Global communication between components, hooks and tabs in React.
 
 🌍 Organize and manage your global app state via hooks and events.  
 ✉️ Send events with a payload from one component, hook or **tab** to another.  

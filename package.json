@@ -3,7 +3,7 @@
   "version": "1.2.1",
   "author": "Maksym Marchuk",
   "license": "MIT",
-  "description": "Global communication between components/hooks in React.",
+  "description": "Global communication between components, hooks and tabs in React.",
   "module": "./dist/use-app-events.js",
   "main": "./dist/use-app-events.umd.cjs",
   "type": "module",
@@ -73,3 +73,4 @@
     "context"
   ]
 }
+
