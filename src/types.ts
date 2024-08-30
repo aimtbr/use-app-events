@@ -29,9 +29,14 @@ export type UseAppEventsReturn<Type extends string> = {
   listenForEvents<Payload>(
     this: void,
     eventGroup: Type[],
-    callback: Callback<Type> | Callback<[Type, Payload]>
+    callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
   ): void;
 
   /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-  notifyEventListeners: <Payload>(eventType: Type, payload?: Payload) => void;
+  notifyEventListeners<Payload>(
+    this: void,
+    eventType: Type,
+    payload?: Payload,
+    broadcast?: boolean
+  ): void;
 };

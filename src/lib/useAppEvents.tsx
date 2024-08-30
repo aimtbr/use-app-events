@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { Listener, UseAppEventsReturn } from '$types';
 import { debugMessage, generateId } from '$utils';
 import heap from '$heap';
+import { broadcastMessage } from '$broadcast';
+import { createMessage } from '$broadcast/api';
 
 type UseAppEventsProps = {
   debug: boolean;
@@ -97,7 +99,7 @@ function useAppEvents<EventType extends string>(
 
   const notifyEventListeners: UseAppEventsReturn<EventType>['notifyEventListeners'] =
     useCallback(
-      (eventType, payload) => {
+      (eventType, payload, broadcast = true) => {
         debugMessage(
           `[EVENT-OCCURRED](instance ${callerId}) Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
           debug
@@ -114,6 +116,11 @@ function useAppEvents<EventType extends string>(
             listener.callback(payload);
           }
         });
+
+        // Broadcast the occurred event to other browsing contexts.
+        if (broadcast) {
+          broadcastMessage(createMessage(eventType, payload));
+        }
       },
       [callerId]
     );
