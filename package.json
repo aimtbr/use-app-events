@@ -1,6 +1,6 @@
 {
   "name": "use-app-events",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Maksym Marchuk",
   "license": "MIT",
   "description": "Global communication between components/hooks in React.",
