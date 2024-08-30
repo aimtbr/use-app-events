@@ -29,15 +29,18 @@ pnpm add use-app-events
 ```ts
 /** Hook for managing application events. */
 useAppEvents<Type extends string>(args): result
-  - args?: { debug: boolean }
+  - args?: {
       /** When true, enables a debug mode in non-production environment. */
       debug: boolean;
+    }
 
-  - result: { notifyEventListeners: Function, listenForEvents: Function }
+  - result: {
       /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
       function notifyEventListeners<Payload>(
         eventType: Type,
-        payload: Payload
+        payload: Payload,
+        /** When false, the event is not sent to other browsing contexts. */
+        broadcast: boolean = true
       ): void;
 
       /** [Overload 1] Subscribe and listen for the specified event type to occur in the app. */
@@ -51,8 +54,12 @@ useAppEvents<Type extends string>(args): result
         eventGroup: Type[], // multiple event types
         callback: Callback<Type> | Callback<[Type, Payload]>
       ): void;
-
+    }
 ```
+
+> The `notifyEventListeners` and `listenForEvents` functions are also available independently outside of the `useAppEvents` hook to be used beyond the React components/hooks.
+>
+> However, prefer `useAppEvents` when possible.
 
 <br/>
 

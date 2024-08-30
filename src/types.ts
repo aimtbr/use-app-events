@@ -37,6 +37,7 @@ export type UseAppEventsReturn<Type extends string> = {
     this: void,
     eventType: Type,
     payload?: Payload,
+    /** When false, the event is not sent to other browsing contexts. */
     broadcast?: boolean
   ): void;
 };
