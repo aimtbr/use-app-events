@@ -1,5 +1,5 @@
 import { createMessage } from '$broadcast/api';
-import { useAppEvents } from '$lib';
+import { heap, useAppEvents } from '$lib';
 import { renderHook } from '@testing-library/react';
 
 enum EventType {
@@ -11,6 +11,8 @@ enum EventType {
 
 afterEach(() => {
   jest.restoreAllMocks();
+
+  heap.eventListeners = [];
 });
 
 describe('useAppEvents', () => {
@@ -29,7 +31,7 @@ describe('useAppEvents', () => {
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.A, message);
   });
 
-  test('Subscribe for an event', () => {
+  test('Listen for an event', () => {
     const recipient = renderHook(() => useAppEvents<EventType>());
 
     const listenForEventsSpy = jest.spyOn(
@@ -140,7 +142,7 @@ describe('useAppEvents', () => {
     expect(mockListenForEventBCallback).toHaveBeenCalledWith(message);
   });
 
-  test('Listen for an event group (multiple events) at once', () => {
+  test('Listen for an event group (multiple events)', () => {
     const messageA = 'New event A!';
     const messageB = 'New event B!';
     const messageC = 'New event C!';
@@ -310,5 +312,77 @@ describe('useAppEvents', () => {
     );
 
     expect(broadcastMessageSpy).not.toHaveBeenCalled();
+  });
+
+  test('Listen and unlisten an event', () => {
+    const recipient = renderHook(() => useAppEvents<EventType>());
+
+    const listenForEventsSpy = jest.spyOn(
+      recipient.result.current,
+      'listenForEvents'
+    );
+    const listenForEventsCallback = () => {};
+
+    const unlisten = recipient.result.current.listenForEvents(
+      EventType.A,
+      listenForEventsCallback
+    );
+
+    const unlistenSpy = jest.fn(unlisten);
+
+    expect(heap.eventListeners).toHaveLength(1);
+
+    unlistenSpy();
+
+    expect(listenForEventsSpy).toHaveBeenCalledTimes(1);
+    expect(listenForEventsSpy).toHaveReturned();
+    expect(unlistenSpy).toHaveBeenCalledTimes(1);
+    expect(heap.eventListeners).toHaveLength(0);
+  });
+
+  test('Listen and unlisten an event group', () => {
+    const recipient = renderHook(() => useAppEvents<EventType>());
+
+    const listenForEventsSpy = jest.spyOn(
+      recipient.result.current,
+      'listenForEvents'
+    );
+    const listenForEventsCallback = () => {};
+
+    const unlisten = recipient.result.current.listenForEvents(
+      [EventType.A, EventType.B],
+      listenForEventsCallback
+    );
+
+    const unlistenSpy = jest.fn(unlisten);
+
+    expect(heap.eventListeners).toHaveLength(2);
+
+    unlistenSpy();
+
+    expect(listenForEventsSpy).toHaveBeenCalledTimes(1);
+    expect(listenForEventsSpy).toHaveReturned();
+    expect(unlistenSpy).toHaveBeenCalledTimes(1);
+    expect(unlistenSpy).toHaveBeenCalledWith();
+    expect(heap.eventListeners).toHaveLength(0);
+  });
+
+  test('Single listener is added to a heap', () => {
+    const recipient = renderHook(() => useAppEvents<EventType>());
+
+    recipient.result.current.listenForEvents(EventType.A, () => {});
+
+    expect(heap.eventListeners).toHaveLength(1);
+  });
+
+  test('Multiple listeners are added to a heap', () => {
+    const recipient = renderHook(() => useAppEvents<EventType>());
+
+    recipient.result.current.listenForEvents(
+      [EventType.A, EventType.B],
+      () => {}
+    );
+
+    expect(heap.eventListeners).toHaveLength(2);
   });
 });

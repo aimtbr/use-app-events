@@ -24,6 +24,19 @@ pnpm add use-app-events
 
 <br/>
 
+## Exports
+
+- **useAppEvents**
+  - Hook for managing application events.
+- **notifyEventListeners**
+  - Function to notify all listeners of the specified event type subscribed via `listenForEvents`.
+- **listenForEvents**
+  - Function to subscribe and listen for the specified event type(s) to occur in the app.
+- **heap**
+  - Object containing `eventListeners`, an array of event listeners created by `use-app-events` (look, don't touch).
+
+<br/>
+
 ## API
 
 ```ts
@@ -47,13 +60,13 @@ useAppEvents<Type extends string>(args): result
       function listenForEvents<Payload>(
         eventType: Type, // single event type
         callback: Callback<void> | Callback<Payload>
-      ): void;
+      ): CleanupFunction;
 
       /** [Overload 2] Subscribe and listen for the specified event types to occur in the app. */
       function listenForEvents<Payload>(
         eventGroup: Type[], // multiple event types
         callback: Callback<Type> | Callback<[Type, Payload]>
-      ): void;
+      ): CleanupFunction;
     }
 ```
 
@@ -89,6 +102,12 @@ useAppEvents<Type extends string>(args): result
 
 - However, if `EventType` is not provided, any `string` or `enum` can be used:
   ![Plain string passed as the event type to listenForEvents and notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/docs/image-5.png)
+
+<br/>
+
+## Use cases
+
+- **[Don't use React.createContext(), create hooks.](https://dev.to/maqs/dont-use-reactcontext-create-hooks-40a9)**
 
 <br/>
 
@@ -238,4 +257,8 @@ git clone https://github.com/aimtbr/use-app-events.git && cd use-app-events && n
 ## License
 
 MIT
+
+## Author
+
+Maksym Marchuk
 

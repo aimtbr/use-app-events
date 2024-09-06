@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import { Listener, UseAppEventsReturn } from '$types';
+import { CleanupFunction, Listener, UseAppEventsReturn } from '$types';
 import { debugMessage, generateId } from '$utils';
 import heap from '$heap';
 import { broadcastMessage } from '$broadcast';
@@ -43,10 +43,11 @@ function useAppEvents<EventType extends string>(
   const listenForEvents: UseAppEventsReturn<EventType>['listenForEvents'] =
     useCallback(
       (eventTypeOrGroup, callback) => {
+        const createdListeners: Listener<EventType>[] = [];
         let eventGroup: EventType[];
 
-        const isEventGroup = Array.isArray(eventTypeOrGroup);
         // 1. If eventTypeOrGroup is not an array (not a group), make it a group
+        const isEventGroup = Array.isArray(eventTypeOrGroup);
         if (isEventGroup) {
           eventGroup = eventTypeOrGroup;
         } else {
@@ -92,7 +93,17 @@ function useAppEvents<EventType extends string>(
 
             heap.eventListeners = [...heap.eventListeners, newListener];
           }
+
+          createdListeners.push(newListener);
         });
+
+        const cleanup: CleanupFunction = () => {
+          heap.eventListeners = heap.eventListeners.filter(
+            (listener) => !createdListeners.includes(listener)
+          );
+        };
+
+        return cleanup;
       },
       [callerId]
     );

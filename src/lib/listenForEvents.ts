@@ -1,17 +1,17 @@
 import heap from '$heap';
-import { Callback, Listener } from '$types';
+import { Callback, CleanupFunction, Listener } from '$types';
 
 /** Subscribe and listen for the specified event type to occur in the app. */
 function listenForEvents<Type extends string, Payload>(
   eventType: Type,
   callback: Callback<void> | Callback<Payload>
-): void;
+): CleanupFunction;
 
 /** Subscribe and listen for the specified event types to occur in the app. */
 function listenForEvents<Type extends string, Payload>(
   eventGroup: Type[],
   callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
-): void;
+): CleanupFunction;
 
 function listenForEvents<Type extends string, Payload>(
   eventTypeOrGroup: Type | Type[],
@@ -21,10 +21,11 @@ function listenForEvents<Type extends string, Payload>(
     | Callback<Type>
     | Callback<[Type, Payload]>
 ) {
+  const createdListeners: Listener<Type>[] = [];
   let eventGroup: Type[];
 
-  const isEventGroup = Array.isArray(eventTypeOrGroup);
   // 1. If eventTypeOrGroup is not an array (not a group), make it a group
+  const isEventGroup = Array.isArray(eventTypeOrGroup);
   if (isEventGroup) {
     eventGroup = eventTypeOrGroup;
   } else {
@@ -58,7 +59,17 @@ function listenForEvents<Type extends string, Payload>(
     if (!isDuplicateListener) {
       heap.eventListeners = [...heap.eventListeners, newListener];
     }
+
+    createdListeners.push(newListener);
   });
+
+  const cleanup: CleanupFunction = () => {
+    heap.eventListeners = heap.eventListeners.filter(
+      (listener) => !createdListeners.includes(listener)
+    );
+  };
+
+  return cleanup;
 }
 
 export default listenForEvents;

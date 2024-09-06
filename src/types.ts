@@ -23,14 +23,14 @@ export type UseAppEventsReturn<Type extends string> = {
     this: void,
     eventType: Type,
     callback: Callback<void> | Callback<Payload>
-  ): void;
+  ): CleanupFunction;
 
   /** Subscribe and listen for the specified event types to occur in the app. */
   listenForEvents<Payload>(
     this: void,
     eventGroup: Type[],
     callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
-  ): void;
+  ): CleanupFunction;
 
   /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
   notifyEventListeners<Payload>(
@@ -41,3 +41,5 @@ export type UseAppEventsReturn<Type extends string> = {
     broadcast?: boolean
   ): void;
 };
+
+export type CleanupFunction = Callback;
