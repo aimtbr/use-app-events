@@ -248,6 +248,16 @@ describe('useAppEvents', () => {
     expect(mockDebugMessage).toHaveBeenCalledTimes(5);
   });
 
+  test('Overwrite the duplicated listeners', () => {
+    const instance = renderHook(() => useAppEvents<EventType>());
+
+    instance.result.current.listenForEvents(EventType.A, () => {});
+
+    instance.result.current.listenForEvents(EventType.A, () => {});
+
+    expect(heap.eventListeners).toHaveLength(1);
+  });
+
   test('Broadcast events to other browsing contexts', async () => {
     const payload = 'Hi';
 

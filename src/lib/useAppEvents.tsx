@@ -78,10 +78,8 @@ function useAppEvents<EventType extends string>(
               debug
             );
 
-            heap.eventListeners = heap.eventListeners.with(
-              duplicateListenerIndex,
-              newListener
-            );
+            heap.eventListeners = [...heap.eventListeners];
+            heap.eventListeners[duplicateListenerIndex] = newListener;
           }
 
           // 1.3 If the listener is unique (non-duplicate), add it right away.
