@@ -4,6 +4,7 @@ import { Listener } from '$types';
 const eventListeners: Listener<any, any>[] = [];
 
 const heap = Object.seal({
+  /** The array of listeners used by active `listenForEvents` instances. */
   eventListeners,
 });
 

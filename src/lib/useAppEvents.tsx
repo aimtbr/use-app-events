@@ -4,6 +4,7 @@ import { debugMessage, generateId } from '$utils';
 import heap from '$heap';
 import { broadcastMessage } from '$broadcast';
 import { createMessage } from '$broadcast/api';
+import options from '$options';
 
 type UseAppEventsProps = {
   debug: boolean;
@@ -108,7 +109,7 @@ function useAppEvents<EventType extends string>(
 
   const notifyEventListeners: UseAppEventsReturn<EventType>['notifyEventListeners'] =
     useCallback(
-      (eventType, payload, broadcast = true) => {
+      (eventType, payload, broadcast = options.broadcast) => {
         debugMessage(
           `[EVENT-OCCURRED](instance ${callerId}) Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
           debug

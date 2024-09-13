@@ -1,4 +1,5 @@
 import { broadcastMessage } from '$broadcast';
+import options from '$options';
 import { createMessage } from '$broadcast/api';
 import heap from '$heap';
 
@@ -7,7 +8,7 @@ const notifyEventListeners = <Payload, Type extends string>(
   eventType: Type,
   payload?: Payload,
   /** When false, the event is not sent to other browsing contexts. */
-  broadcast: boolean = true
+  broadcast: boolean = options.broadcast
 ): void => {
   // Notify the listeners of the specified event type
   heap.eventListeners.forEach((listener) => {

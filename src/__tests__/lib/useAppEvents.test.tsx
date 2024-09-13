@@ -1,5 +1,5 @@
 import { createMessage } from '$broadcast/api';
-import { heap, useAppEvents } from '$lib';
+import { heap, options, useAppEvents } from '$lib';
 import { renderHook } from '@testing-library/react';
 
 enum EventType {
@@ -291,7 +291,7 @@ describe('useAppEvents', () => {
     );
   });
 
-  test('Do not broadcast events to other browsing contexts', async () => {
+  test('Do not broadcast events to other browsing contexts selectively', async () => {
     const payload = 'Hi';
 
     const sender = renderHook(() => useAppEvents<EventType>());
@@ -320,6 +320,36 @@ describe('useAppEvents', () => {
       payload,
       false
     );
+
+    expect(broadcastMessageSpy).not.toHaveBeenCalled();
+  });
+
+  test('Do not broadcast events to other browsing contexts entirely', async () => {
+    const payload = 'Hi';
+
+    const sender = renderHook(() => useAppEvents<EventType>());
+
+    const broadcastMessageSpy = jest.spyOn(
+      await import('$broadcast/api/broadcastMessage'),
+      'default'
+    );
+
+    const notifyEventListenersSpy = jest.spyOn(
+      sender.result.current,
+      'notifyEventListeners'
+    );
+
+    options.broadcast = false;
+
+    sender.result.current.notifyEventListeners(EventType.A, undefined);
+    sender.result.current.notifyEventListeners(EventType.B, payload);
+
+    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(2);
+    expect(notifyEventListenersSpy).toHaveBeenCalledWith(
+      EventType.A,
+      undefined
+    );
+    expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.B, payload);
 
     expect(broadcastMessageSpy).not.toHaveBeenCalled();
   });
