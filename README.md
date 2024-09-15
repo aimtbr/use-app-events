@@ -35,7 +35,9 @@ pnpm add use-app-events
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
 - **heap**
-  - Object containing `eventListeners`, an array of event listeners created by `use-app-events` (look, don't touch).
+  - _(readonly)_ Collection of resources operated by the package.
+- **options**
+  - Collection of options used to adjust the behavior of the package.
 
 <br/>
 <br/>
