@@ -35,14 +35,19 @@ pnpm add use-app-events
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
 - **heap**
-  - Object containing `eventListeners`, an array of event listeners created by `use-app-events` (look, don't touch).
+  - _(readonly)_ Collection of resources operated by the package.
+- **options**
+  - Collection of options used to adjust the behavior of the package.
 
 <br/>
 
 ## API
 
+<br/>
+
+**Hook for managing application events.**
+
 ```ts
-/** Hook for managing application events. */
 useAppEvents<Type extends string>(args): result
   - args?: {
       /** When true, enables a debug mode in non-production environment. */
@@ -55,7 +60,7 @@ useAppEvents<Type extends string>(args): result
         eventType: Type,
         payload: Payload,
         /** When false, the event is not sent to other browsing contexts. */
-        broadcast: boolean = true
+        broadcast: boolean = options.broadcast
       ): void;
 
       /** [Overload 1] Subscribe and listen for the specified event type to occur in the app. */
@@ -75,6 +80,126 @@ useAppEvents<Type extends string>(args): result
 > The `notifyEventListeners` and `listenForEvents` functions are also available independently outside of the `useAppEvents` hook to be used beyond the React components/hooks.
 >
 > However, prefer `useAppEvents` when possible.
+
+<br/>
+
+**Collection of resources operated by the package.**
+
+```tsx
+heap: {
+  /** The array of listeners used by active `listenForEvents` instances. */
+  eventListeners: Listener[];
+}
+```
+
+<br/>
+
+**Collection of options used to adjust the behavior of the package.**
+
+```tsx
+options: {
+  /** When false, `notifyEventListeners` will not broadcast events to other browsing contexts by default. */
+  broadcast: boolean = true;
+}
+```
+
+<br/>
+
+## How to use
+
+1. **Listen for events in a component**
+
+   ```ts
+   import { useAppEvents } from 'use-app-events';
+   ```
+
+   a. Single event
+
+   ```tsx
+   const Component = () => {
+     const { listenForEvents } = useAppEvents();
+
+     listenForEvents('event-A', (payload) => {
+       // 1. Do something when 'event-A' occurs...
+       // 2. Process a payload if you expect it to be sent by `notifyEventListeners`
+     });
+   };
+   ```
+
+   b. Multiple events
+
+   ```tsx
+   const Component = () => {
+     const { listenForEvents } = useAppEvents();
+
+     listenForEvents(['event-A', 'event-B'], (eventType, payload) => {
+       // 1. Do something when either 'event-A' or 'event-B' occurs...
+
+       // 2. Select a specific event by its type from `eventType`
+       if (eventType === 'event-A') {
+         console.log('We got an event A with some data', payload);
+       }
+     });
+   };
+   ```
+
+2. **Notify the event listeners from a component**
+
+   ```tsx
+   import { useAppEvents } from 'use-app-events';
+   ```
+
+   a. Without a payload (only event)
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     // Notify the listeners of this event type with no data
+     notifyEventListeners('event-A');
+   };
+   ```
+
+   b. With a payload (event + data)
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     const payload = { a: 1, b: 2 };
+
+     // Notify the listeners of this event type and give them some data
+     notifyEventListeners('event-A', payload);
+   };
+   ```
+
+   c. Disable event broadcasting for a specific call
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     const payload = { a: 1, b: 2 };
+
+     // Notify the listeners of this event type in the current tab only
+     notifyEventListeners('event-A', payload, false);
+   };
+   ```
+
+3. **Adjust options**
+
+   ```tsx
+   import { options } from 'use-app-events';
+   ```
+
+   a. Disable event broadcasting entirely
+
+   ```tsx
+   options.broadcast = false;
+
+   // From now on, notifyEventListeners will send events to listeners of the current tab only by default
+   notifyEventListeners('event-A', 'some-payload');
+   ```
 
 <br/>
 
@@ -110,6 +235,7 @@ useAppEvents<Type extends string>(args): result
 ## Use cases
 
 - **[Don't use React.createContext(), create hooks.](https://dev.to/maqs/dont-use-reactcontext-create-hooks-40a9)**
+- **[Send data between tabs in React.](https://dev.to/maqs/send-data-between-tabs-in-react-obk)**
 
 <br/>
 
@@ -263,4 +389,3 @@ MIT
 ## Author
 
 Maksym Marchuk
-
