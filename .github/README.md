@@ -12,11 +12,11 @@ Event system for global communication in JavaScript.
 
 ## Facts
 
-📦 Small in size
-🍃 Tree-shakable
-📝 Well documented
-🛡️ Strictly typed with TypeScript
-♻️ Works between different browser tabs
+📦 Small in size  
+🍃 Tree-shakable  
+📝 Well documented  
+🛡️ Strictly typed with TypeScript  
+♻️ Works between different browser tabs  
 🪝 Exports a convenient hook for **React** developers
 
 <br/>

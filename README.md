@@ -12,11 +12,11 @@ Event system for global communication in JavaScript.
 
 ## Facts
 
-📦 Small in size
-🍃 Tree-shakable
-📝 Well documented
-🛡️ Strictly typed with TypeScript
-♻️ Works between different browser <u>tabs</u>
+📦 Small in size  
+🍃 Tree-shakable  
+📝 Well documented  
+🛡️ Strictly typed with TypeScript  
+♻️ Works between different browser <u>tabs</u>  
 🪝 Exports a convenient hook for <u>React</u> developers
 
 <br/>
@@ -55,7 +55,7 @@ pnpm add use-app-events
 
 > _This is a truncated version of README to reduce the package size._
 >
-> ##### [[ _See full docs on GitHub_ ]](https://github.com/aimtbr/use-app-events?tab=readme-ov-file#use-app-events)
+> ##### [[_See full docs on GitHub_]](https://github.com/aimtbr/use-app-events?tab=readme-ov-file#use-app-events)
 
 <br/>
 
