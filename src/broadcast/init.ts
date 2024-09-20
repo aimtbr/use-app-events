@@ -1,4 +1,4 @@
-import { notifyEventListeners } from '$lib';
+import { notifyEventListeners } from '$main';
 import { verifyMessage } from './api';
 import { BroadcastMessage } from './types';
 

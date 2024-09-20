@@ -1,5 +1,5 @@
 import { createMessage } from '$broadcast/api';
-import { notifyEventListeners, options } from '$lib';
+import { notifyEventListeners, options } from '$main';
 
 enum EventType {
   A = 'event-a',

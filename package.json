@@ -3,9 +3,8 @@
   "version": "1.4.1",
   "author": "Maksym Marchuk",
   "license": "MIT",
-  "description": "Global communication between components, hooks and tabs in React.",
-  "module": "./dist/use-app-events.js",
-  "main": "./dist/use-app-events.umd.cjs",
+  "description": "Event system for global communication in JavaScript.",
+  "module": "./dist/main.js",
   "type": "module",
   "engines": {
     "node": "^18.0.0 || ^20.0.0 || ^22.0.0"
@@ -57,8 +56,19 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/use-app-events.js",
-      "require": "./dist/use-app-events.umd.cjs"
+      "import": "./dist/main.js"
+    },
+    "./listenForEvents": {
+      "import": "./dist/lib/listenForEvents.js"
+    },
+    "./notifyEventListeners": {
+      "import": "./dist/lib/notifyEventListeners.js"
+    },
+    "./useAppEvents": {
+      "import": "./dist/lib/useAppEvents.js"
+    },
+    "./options": {
+      "import": "./dist/options.js"
     }
   },
   "keywords": [
@@ -73,3 +83,4 @@
     "context"
   ]
 }
+

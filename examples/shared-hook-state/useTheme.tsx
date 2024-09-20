@@ -1,4 +1,4 @@
-import { useAppEvents } from '$lib';
+import { useAppEvents } from '$main';
 import { EventType } from '../constants';
 import { useState } from 'react';
 

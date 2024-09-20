@@ -2,11 +2,22 @@
 
 ![NPM Version](https://img.shields.io/npm/v/use-app-events?color=%2340bb12) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/use-app-events?color=%2340bb12) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/use-app-events)
 
-Global communication between components, hooks and tabs in React.
+Event system for global communication in JavaScript.
 
-🌍 Organize and manage your global app state via hooks and events.  
-✉️ Send events with a payload from one component, hook or **tab** to another.  
-📩 Listen for events of a specific type to occur and process the received payload.
+🌍 Organize and manage your global app state via events.  
+📨 Send events and data from one part of the app to another.  
+📩 Listen for events to occur and process their payload.
+
+<br/>
+
+## Facts
+
+📦 Small in size
+🍃 Tree-shakable
+📝 Well documented
+🛡️ Strictly typed with TypeScript
+♻️ Works between different browser tabs
+🪝 Exports a convenient hook for **React** developers
 
 <br/>
 
@@ -28,12 +39,12 @@ pnpm add use-app-events
 
 ## Exports
 
-- **useAppEvents**
-  - Hook for managing application events.
 - **notifyEventListeners**
   - Function to notify all listeners of the specified event type subscribed via `listenForEvents`.
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
+- **useAppEvents**
+  - Hook for managing application events in React.
 - **heap**
   - _(readonly)_ Collection of resources operated by the package.
 - **options**
@@ -45,7 +56,7 @@ pnpm add use-app-events
 
 <br/>
 
-**Hook for managing application events.**
+**Hook for managing application events in React.**
 
 ```ts
 useAppEvents<Type extends string>(args): result
@@ -79,7 +90,7 @@ useAppEvents<Type extends string>(args): result
 
 > The `notifyEventListeners` and `listenForEvents` functions are also available independently outside of the `useAppEvents` hook to be used beyond the React components/hooks.
 >
-> However, prefer `useAppEvents` when possible.
+> However, prefer `useAppEvents` in React when possible.
 
 <br/>
 
@@ -107,7 +118,23 @@ options: {
 
 ## How to use
 
-1. **Listen for events in a component**
+1. **Adjust options**
+
+   ```tsx
+   import options from 'use-app-events/options';
+   import notifyEventListeners from 'use-app-events/notifyEventListeners';
+   ```
+
+   a. Disable event broadcasting entirely
+
+   ```tsx
+   options.broadcast = false;
+
+   // From now on, notifyEventListeners will send events to listeners of the current tab only by default
+   notifyEventListeners('event-A', 'some-payload');
+   ```
+
+2. **Listen for events in the React component**
 
    ```ts
    import { useAppEvents } from 'use-app-events';
@@ -143,7 +170,7 @@ options: {
    };
    ```
 
-2. **Notify the event listeners from a component**
+3. **Notify the event listeners from the React component**
 
    ```tsx
    import { useAppEvents } from 'use-app-events';
@@ -184,21 +211,6 @@ options: {
      // Notify the listeners of this event type in the current tab only
      notifyEventListeners('event-A', payload, false);
    };
-   ```
-
-3. **Adjust options**
-
-   ```tsx
-   import { options } from 'use-app-events';
-   ```
-
-   a. Disable event broadcasting entirely
-
-   ```tsx
-   options.broadcast = false;
-
-   // From now on, notifyEventListeners will send events to listeners of the current tab only by default
-   notifyEventListeners('event-A', 'some-payload');
    ```
 
 <br/>
@@ -356,11 +368,7 @@ function BrotherChildComponent() {
 
 ## Motivation
 
-Usually, it was recommended to use `React context` to manage the global state of the app without "prop drilling".
-
-However, as the app grows, the number of `contexts` increases accordingly and partially ruins the readability and usability of your app.
-
-<ins>So, the motivation</ins> to create `use-app-events` was to find a way to share and manage the state from any part of the app (globally) and allow all components to communicate with each other regardless of their position in the tree.
+The motivation to create `use-app-events` was to find a way to manage the state from any part of the app (globally) and allow all elements to communicate with each other regardless of their position in the tree.
 
 <br/>
 

@@ -1,4 +1,4 @@
-import * as packageExports from '$lib';
+import * as packageExports from '$main';
 
 test.only('The package exposes an expected API', () => {
   expect(packageExports).toHaveProperty('useAppEvents');

@@ -1,4 +1,4 @@
-import { heap } from '$lib';
+import { heap } from '$main';
 
 describe('heap', () => {
   test('Heap has all properties', () => {
