@@ -43,19 +43,19 @@ function useAppEvents<EventType extends string>(
 
   const listenForEvents: UseAppEventsReturn<EventType>['listenForEvents'] =
     useCallback(
-      (eventTypeOrGroup, callback) => {
+      (eventTypeOrTypes, callback) => {
         const createdListeners: Listener<EventType>[] = [];
-        let eventGroup: EventType[];
+        let eventTypes: EventType[];
 
-        // 1. If eventTypeOrGroup is not an array (not a group), make it a group
-        const isEventGroup = Array.isArray(eventTypeOrGroup);
-        if (isEventGroup) {
-          eventGroup = eventTypeOrGroup;
+        // 1. Make sure eventTypes contains an array of event types
+        const hasMultipleTypes = Array.isArray(eventTypeOrTypes);
+        if (hasMultipleTypes) {
+          eventTypes = eventTypeOrTypes;
         } else {
-          eventGroup = [eventTypeOrGroup];
+          eventTypes = [eventTypeOrTypes];
         }
 
-        eventGroup.forEach((eventType) => {
+        eventTypes.forEach((eventType) => {
           // 1.1 Find an old duplicate listener
           const duplicateListenerIndex = heap.eventListeners.findIndex(
             (listener) =>
@@ -68,7 +68,7 @@ function useAppEvents<EventType extends string>(
             eventType,
             callback,
             callerId,
-            isEventGroup,
+            isEventGroup: hasMultipleTypes,
           };
 
           // 1.2 If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).
@@ -109,28 +109,39 @@ function useAppEvents<EventType extends string>(
 
   const notifyEventListeners: UseAppEventsReturn<EventType>['notifyEventListeners'] =
     useCallback(
-      (eventType, payload, broadcast = options.broadcast) => {
-        debugMessage(
-          `[EVENT-OCCURRED](instance ${callerId}) Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
-          debug
-        );
+      (eventTypeOrTypes, payload, broadcast = options.broadcast) => {
+        let eventTypes: EventType[];
 
-        // Notify the listeners of the specified event type
-        heap.eventListeners.forEach((listener) => {
-          if (listener.eventType === eventType) {
-            // If the listener is a part of event group (listenForEvents called with an array)
-            if (listener.isEventGroup) {
-              return listener.callback(eventType, payload);
+        const hasMultipleTypes = Array.isArray(eventTypeOrTypes);
+        if (hasMultipleTypes) {
+          eventTypes = eventTypeOrTypes;
+        } else {
+          eventTypes = [eventTypeOrTypes];
+        }
+
+        eventTypes.forEach((eventType) => {
+          debugMessage(
+            `[EVENT-OCCURRED](instance ${callerId}) Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
+            debug
+          );
+
+          // Notify the listeners of the specified event type
+          heap.eventListeners.forEach((listener) => {
+            if (listener.eventType === eventType) {
+              // If the listener is a part of event group (listenForEvents called with an array)
+              if (listener.isEventGroup) {
+                return listener.callback(eventType, payload);
+              }
+
+              listener.callback(payload);
             }
+          });
 
-            listener.callback(payload);
+          // Broadcast the occurred event to other browsing contexts.
+          if (broadcast) {
+            broadcastMessage(createMessage(eventType, payload));
           }
         });
-
-        // Broadcast the occurred event to other browsing contexts.
-        if (broadcast) {
-          broadcastMessage(createMessage(eventType, payload));
-        }
       },
       [callerId]
     );

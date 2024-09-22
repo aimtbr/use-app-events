@@ -40,7 +40,7 @@ pnpm add use-app-events
 ## Exports
 
 - **notifyEventListeners**
-  - Function to notify all listeners of the specified event type subscribed via `listenForEvents`.
+  - Function to notify all listeners of the specified event type(s) subscribed via `listenForEvents`.
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
 - **useAppEvents**
@@ -66,25 +66,37 @@ useAppEvents<Type extends string>(args): result
     }
 
   - result: {
-      /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-      function notifyEventListeners<Payload>(
-        eventType: Type,
-        payload: Payload,
-        /** When false, the event is not sent to other browsing contexts. */
-        broadcast: boolean = options.broadcast
-      ): void;
-
       /** [Overload 1] Subscribe and listen for the specified event type to occur in the app. */
       function listenForEvents<Payload>(
-        eventType: Type, // single event type
+        eventType: Type,
         callback: Callback<void> | Callback<Payload>
       ): CleanupFunction;
 
       /** [Overload 2] Subscribe and listen for the specified event types to occur in the app. */
       function listenForEvents<Payload>(
-        eventGroup: Type[], // multiple event types
-        callback: Callback<Type> | Callback<[Type, Payload]>
+        eventTypes: Type[],
+        callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
       ): CleanupFunction;
+
+      /** [Overload 1] Notify all listeners of the specified event type subscribed via `listenForEvents`. */
+      function notifyEventListeners<Payload>(
+        /** Listeners of this event type will be notified. */
+        eventType: Type,
+        /** Data to send to listeners of this event type. */
+        payload?: Payload,
+        /** When false, the event is not sent to other browsing contexts. */
+        broadcast?: boolean = options.broadcast
+      ): void;
+
+      /** [Overload 2] Notify all listeners of the specified event types subscribed via `listenForEvents`. */
+      function notifyEventListeners<Payload>(
+        /** Listeners of these event types will be notified. */
+        eventTypes: Type[],
+        /** Data to send to listeners of these event types. */
+        payload?: Payload,
+        /** When false, the event is not sent to other browsing contexts. */
+        broadcast?: boolean = options.broadcast
+      ): void;
     }
 ```
 

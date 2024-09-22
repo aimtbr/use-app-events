@@ -28,14 +28,27 @@ export type UseAppEventsReturn<Type extends string> = {
   /** Subscribe and listen for the specified event types to occur in the app. */
   listenForEvents<Payload>(
     this: void,
-    eventGroup: Type[],
+    eventTypes: Type[],
     callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
   ): CleanupFunction;
 
   /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
   notifyEventListeners<Payload>(
     this: void,
+    /** Listeners of this event type will be notified. */
     eventType: Type,
+    /** Data to send to listeners of this event type. */
+    payload?: Payload,
+    /** When false, the event is not sent to other browsing contexts. */
+    broadcast?: boolean
+  ): void;
+
+  /** Notify all listeners of the specified event types subscribed via `listenForEvents`. */
+  notifyEventListeners<Payload>(
+    this: void,
+    /** Listeners of these event types will be notified. */
+    eventTypes: Type[],
+    /** Data to send to listeners of these event types. */
     payload?: Payload,
     /** When false, the event is not sent to other browsing contexts. */
     broadcast?: boolean

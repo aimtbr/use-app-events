@@ -9,12 +9,12 @@ function listenForEvents<Type extends string, Payload>(
 
 /** Subscribe and listen for the specified event types to occur in the app. */
 function listenForEvents<Type extends string, Payload>(
-  eventGroup: Type[],
+  eventTypes: Type[],
   callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
 ): CleanupFunction;
 
 function listenForEvents<Type extends string, Payload>(
-  eventTypeOrGroup: Type | Type[],
+  eventTypeOrTypes: Type | Type[],
   callback:
     | Callback<void>
     | Callback<Payload>
@@ -22,17 +22,17 @@ function listenForEvents<Type extends string, Payload>(
     | Callback<[Type, Payload]>
 ) {
   const createdListeners: Listener<Type>[] = [];
-  let eventGroup: Type[];
+  let eventTypes: Type[];
 
-  // 1. If eventTypeOrGroup is not an array (not a group), make it a group
-  const isEventGroup = Array.isArray(eventTypeOrGroup);
-  if (isEventGroup) {
-    eventGroup = eventTypeOrGroup;
+  // 1. Make sure eventTypes contains an array of event types
+  const hasMultipleTypes = Array.isArray(eventTypeOrTypes);
+  if (hasMultipleTypes) {
+    eventTypes = eventTypeOrTypes;
   } else {
-    eventGroup = [eventTypeOrGroup];
+    eventTypes = [eventTypeOrTypes];
   }
 
-  eventGroup.forEach((eventType) => {
+  eventTypes.forEach((eventType) => {
     // 1.1 Find an old duplicate listener
     const duplicateListenerIndex = heap.eventListeners.findIndex(
       (listener) =>
@@ -43,7 +43,7 @@ function listenForEvents<Type extends string, Payload>(
     const newListener: Listener<Type> = {
       eventType,
       callback,
-      isEventGroup,
+      isEventGroup: hasMultipleTypes,
     };
 
     // 1.2 If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).

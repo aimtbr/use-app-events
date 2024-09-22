@@ -40,7 +40,7 @@ pnpm add use-app-events
 ## Exports
 
 - **notifyEventListeners**
-  - Function to notify all listeners of the specified event type subscribed via `listenForEvents`.
+  - Function to notify all listeners of the specified event type(s) subscribed via `listenForEvents`.
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
 - **useAppEvents**

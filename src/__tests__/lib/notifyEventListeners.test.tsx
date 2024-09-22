@@ -37,6 +37,38 @@ describe('notifyEventListeners', () => {
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.A);
   });
 
+  test('Send multiple events with a payload', async () => {
+    const payload = 'Hi';
+
+    const notifyEventListenersSpy = jest.spyOn(
+      await import('$lib/notifyEventListeners'),
+      'default'
+    );
+
+    notifyEventListeners([EventType.A, EventType.B], payload);
+
+    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(1);
+    expect(notifyEventListenersSpy).toHaveBeenCalledWith(
+      [EventType.A, EventType.B],
+      payload
+    );
+  });
+
+  test('Send multiple events without a payload', async () => {
+    const notifyEventListenersSpy = jest.spyOn(
+      await import('$lib/notifyEventListeners'),
+      'default'
+    );
+
+    notifyEventListeners([EventType.A, EventType.B]);
+
+    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(1);
+    expect(notifyEventListenersSpy).toHaveBeenCalledWith([
+      EventType.A,
+      EventType.B,
+    ]);
+  });
+
   test('Broadcast events to other browsing contexts', async () => {
     const payload = 'Hi';
 
@@ -52,18 +84,44 @@ describe('notifyEventListeners', () => {
 
     notifyEventListeners(EventType.A);
     notifyEventListeners(EventType.B, payload);
+    notifyEventListeners([EventType.A, EventType.B]);
+    notifyEventListeners([EventType.A, EventType.B], payload);
 
-    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(2);
+    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(4);
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.A);
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.B, payload);
+    expect(notifyEventListenersSpy).toHaveBeenCalledWith([
+      EventType.A,
+      EventType.B,
+    ]);
+    expect(notifyEventListenersSpy).toHaveBeenCalledWith(
+      [EventType.A, EventType.B],
+      payload
+    );
 
-    expect(broadcastMessageSpy).toHaveBeenCalledTimes(2);
+    expect(broadcastMessageSpy).toHaveBeenCalledTimes(6);
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       1,
       createMessage(EventType.A)
     );
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       2,
+      createMessage(EventType.B, payload)
+    );
+    expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
+      3,
+      createMessage(EventType.A)
+    );
+    expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
+      4,
+      createMessage(EventType.B)
+    );
+    expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
+      5,
+      createMessage(EventType.A, payload)
+    );
+    expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
+      6,
       createMessage(EventType.B, payload)
     );
   });
@@ -83,15 +141,24 @@ describe('notifyEventListeners', () => {
 
     notifyEventListeners(EventType.A, undefined, false);
     notifyEventListeners(EventType.B, payload, false);
+    notifyEventListeners([EventType.A, EventType.B], payload, false);
 
-    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(2);
-    expect(notifyEventListenersSpy).toHaveBeenCalledWith(
+    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(3);
+    expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
+      1,
       EventType.A,
       undefined,
       false
     );
-    expect(notifyEventListenersSpy).toHaveBeenCalledWith(
+    expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
+      2,
       EventType.B,
+      payload,
+      false
+    );
+    expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
+      3,
+      [EventType.A, EventType.B],
       payload,
       false
     );
@@ -116,13 +183,24 @@ describe('notifyEventListeners', () => {
 
     notifyEventListeners(EventType.A, undefined);
     notifyEventListeners(EventType.B, payload);
+    notifyEventListeners([EventType.A, EventType.B], payload);
 
-    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(2);
-    expect(notifyEventListenersSpy).toHaveBeenCalledWith(
+    expect(notifyEventListenersSpy).toHaveBeenCalledTimes(3);
+    expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
+      1,
       EventType.A,
       undefined
     );
-    expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.B, payload);
+    expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
+      2,
+      EventType.B,
+      payload
+    );
+    expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
+      3,
+      [EventType.A, EventType.B],
+      payload
+    );
 
     expect(broadcastMessageSpy).not.toHaveBeenCalled();
   });
