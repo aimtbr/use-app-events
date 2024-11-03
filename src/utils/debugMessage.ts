@@ -1,4 +1,4 @@
-const debugMessage = (message: string, debug: boolean) => {
+const debugMessage = (message: string, debug: boolean | undefined) => {
   const isProduction =
     import.meta.env.PROD || import.meta.env.MODE === 'production';
 

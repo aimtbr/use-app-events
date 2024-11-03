@@ -2,11 +2,29 @@
 export type Listener<Type extends string, P = any> = {
   /** Event type the listener is waiting for. */
   eventType: Type;
+
   /** Function to call on event. */
-  callback: Callback<void> | Callback<P>;
-  /**  */
-  callerId?: string;
-  isEventGroup?: boolean;
+  callback:
+    | Callback<void>
+    | Callback<P>
+    | AsyncCallback<void>
+    | AsyncCallback<P>;
+
+  /** Unique identifier of the context in which the listener was created. */
+  scopeKey?: string;
+
+  /**
+   * Unique identifier of the event group.
+   *
+   * Note: It is used if `listenForEvents` has been called with an array of event types.
+   */
+  eventGroupId?: string;
+
+  /** Boolean indicating whether the listener should be called only once if the event occurs. */
+  shouldBeCalledOnce?: boolean;
+
+  /** Boolean indicating whether the listener has been called at least once. */
+  hasBeenCalled?: boolean;
 };
 
 export type Callback<P = void, R = void> = P extends void
@@ -17,42 +35,8 @@ export type Callback<P = void, R = void> = P extends void
   ? (...args: P[]) => R
   : (arg: P) => R;
 
-export type UseAppEventsReturn<Type extends string> = {
-  /** Subscribe and listen for the specified event type to occur in the app. */
-  listenForEvents<Payload>(
-    this: void,
-    eventType: Type,
-    callback: Callback<void> | Callback<Payload>
-  ): CleanupFunction;
+export type AsyncCallback<P = void, R = Promise<void>> = Callback<P, R>;
 
-  /** Subscribe and listen for the specified event types to occur in the app. */
-  listenForEvents<Payload>(
-    this: void,
-    eventTypes: Type[],
-    callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
-  ): CleanupFunction;
-
-  /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-  notifyEventListeners<Payload>(
-    this: void,
-    /** Listeners of this event type will be notified. */
-    eventType: Type,
-    /** Data to send to listeners of this event type. */
-    payload?: Payload,
-    /** When false, the event is not sent to other browsing contexts. */
-    broadcast?: boolean
-  ): void;
-
-  /** Notify all listeners of the specified event types subscribed via `listenForEvents`. */
-  notifyEventListeners<Payload>(
-    this: void,
-    /** Listeners of these event types will be notified. */
-    eventTypes: Type[],
-    /** Data to send to listeners of these event types. */
-    payload?: Payload,
-    /** When false, the event is not sent to other browsing contexts. */
-    broadcast?: boolean
-  ): void;
-};
+export type Extend<Source, Target> = Exclude<Source, keyof Target> & Target;
 
 export type CleanupFunction = Callback;

@@ -9,12 +9,6 @@ enum EventType {
   D = 'event-d',
 }
 
-afterEach(() => {
-  jest.restoreAllMocks();
-
-  heap.eventListeners = [];
-});
-
 describe('useAppEvents', () => {
   test('Send an event', () => {
     const message = 'New event!';
@@ -172,7 +166,7 @@ describe('useAppEvents', () => {
     sender.result.current.notifyEventListeners(EventType.A, messageA);
     sender.result.current.notifyEventListeners(EventType.B, messageB);
     sender.result.current.notifyEventListeners(EventType.C, messageC);
-    // Send an event that no one is listening for.
+    // Send an event that no one is listening for
     sender.result.current.notifyEventListeners(EventType.D);
 
     expect(listenForEventsSpy).toHaveBeenCalledWith(
@@ -266,11 +260,9 @@ describe('useAppEvents', () => {
     ]);
   });
 
-  test('Enable debug mode', async () => {
-    const mockDebugMessage = jest.spyOn(
-      await import('$utils/debugMessage'),
-      'default'
-    );
+  test('Enable debug mode', () => {
+    const mockConsoleLog = jest.fn();
+    console.Console.prototype.log = mockConsoleLog;
 
     const instance = renderHook(() => useAppEvents<EventType>({ debug: true }));
 
@@ -285,7 +277,29 @@ describe('useAppEvents', () => {
     // 5. Unmount the hook
     instance.unmount();
 
-    expect(mockDebugMessage).toHaveBeenCalledTimes(5);
+    expect(mockConsoleLog).toHaveBeenCalledTimes(5);
+  });
+
+  test('Disable debug mode', () => {
+    const mockConsoleLog = jest.fn();
+    console.Console.prototype.log = mockConsoleLog;
+
+    const instance = renderHook(() =>
+      useAppEvents<EventType>({ debug: false })
+    );
+
+    // 2. Subscribe for the event
+    instance.result.current.listenForEvents(EventType.A, () => {});
+    // 3. Re-subscribe for the event
+    instance.result.current.listenForEvents(EventType.A, () => {});
+
+    // 4. Send an event
+    instance.result.current.notifyEventListeners(EventType.A);
+
+    // 5. Unmount the hook
+    instance.unmount();
+
+    expect(mockConsoleLog).toHaveBeenCalledTimes(0);
   });
 
   test('Overwrite the duplicated listeners', () => {
@@ -519,5 +533,63 @@ describe('useAppEvents', () => {
     );
 
     expect(heap.eventListeners).toHaveLength(2);
+  });
+
+  test('listenForEvents has all the required properties', () => {
+    const hook = renderHook(() => useAppEvents<EventType>());
+    const { listenForEvents } = hook.result.current;
+
+    expect(listenForEvents).toHaveProperty('once');
+  });
+
+  test('Listen for an event once', () => {
+    const firstPayload = 'Hello';
+    const secondPayload = 'Bye';
+
+    const hook = renderHook(() => useAppEvents<EventType>());
+    const { listenForEvents, notifyEventListeners } = hook.result.current;
+
+    const listenForEventsCallback = jest.fn();
+
+    listenForEvents.once(EventType.A, listenForEventsCallback);
+
+    notifyEventListeners(EventType.A, firstPayload);
+    // The second event should not be processed
+    notifyEventListeners(EventType.A, secondPayload);
+
+    expect(heap.eventListeners).toHaveLength(1);
+    expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(listenForEventsCallback).toHaveBeenCalledTimes(1);
+    expect(listenForEventsCallback).toHaveBeenCalledWith(firstPayload);
+  });
+
+  test('Listen for events once', () => {
+    const firstPayload = 'Hello';
+    const secondPayload = 'Bye';
+
+    const hook = renderHook(() => useAppEvents<EventType>());
+    const { listenForEvents, notifyEventListeners } = hook.result.current;
+
+    const listenForEventsCallback = jest.fn();
+
+    listenForEvents.once([EventType.A, EventType.B], listenForEventsCallback);
+
+    notifyEventListeners(EventType.A, firstPayload);
+    // The second event should not be processed
+    notifyEventListeners(EventType.B, secondPayload);
+
+    expect(heap.eventListeners).toHaveLength(2);
+    expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[1]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[0]).toHaveProperty('hasBeenCalled', true);
+    expect(heap.eventListeners[1]).toHaveProperty('hasBeenCalled', true);
+    expect(heap.eventListeners[0].eventGroupId).toBe(
+      heap.eventListeners[1].eventGroupId
+    );
+    expect(listenForEventsCallback).toHaveBeenCalledTimes(1);
+    expect(listenForEventsCallback).toHaveBeenCalledWith(
+      EventType.A,
+      firstPayload
+    );
   });
 });

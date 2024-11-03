@@ -6,10 +6,6 @@ enum EventType {
   B = 'event-b',
 }
 
-afterEach(() => {
-  jest.restoreAllMocks();
-});
-
 describe('notifyEventListeners', () => {
   test('Send an event with a payload', async () => {
     const payload = 'Hi';

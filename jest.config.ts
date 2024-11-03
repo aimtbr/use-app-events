@@ -8,6 +8,7 @@ const config: Config = {
   testEnvironment: 'jsdom',
   collectCoverageFrom: ['./src/lib/**'],
   coverageReporters: ['text-summary', 'text'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
 
 export default config;

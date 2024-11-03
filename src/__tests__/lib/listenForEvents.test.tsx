@@ -5,12 +5,6 @@ enum EventType {
   B = 'event-b',
 }
 
-afterEach(() => {
-  jest.restoreAllMocks();
-
-  heap.eventListeners = [];
-});
-
 describe('listenForEvents', () => {
   test('Listen for an event', async () => {
     const listenForEventsSpy = jest.spyOn(
@@ -104,5 +98,32 @@ describe('listenForEvents', () => {
     listenForEvents([EventType.A, EventType.B], () => {});
 
     expect(heap.eventListeners).toHaveLength(2);
+  });
+
+  test('Have all the required properties', () => {
+    expect(listenForEvents).toHaveProperty('once');
+  });
+
+  test('Listen for an event once', () => {
+    const listenForEventsCallback = jest.fn();
+
+    listenForEvents(EventType.A, listenForEventsCallback);
+    listenForEvents.once(EventType.A, listenForEventsCallback);
+
+    expect(heap.eventListeners).toHaveLength(1);
+    expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+  });
+
+  test('Listen for events once', () => {
+    const listenForEventsCallback = jest.fn();
+
+    listenForEvents.once([EventType.A, EventType.B], listenForEventsCallback);
+
+    expect(heap.eventListeners).toHaveLength(2);
+    expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[1]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[0].eventGroupId).toBe(
+      heap.eventListeners[1].eventGroupId
+    );
   });
 });

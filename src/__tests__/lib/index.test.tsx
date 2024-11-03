@@ -1,8 +1,9 @@
 import * as packageExports from '$main';
 
-test.only('The package exposes an expected API', () => {
+test.only('The package exposes the expected API', () => {
   expect(packageExports).toHaveProperty('useAppEvents');
   expect(packageExports).toHaveProperty('notifyEventListeners');
   expect(packageExports).toHaveProperty('listenForEvents');
   expect(packageExports).toHaveProperty('heap');
+  expect(packageExports).toHaveProperty('options');
 });
