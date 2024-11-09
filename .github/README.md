@@ -12,12 +12,12 @@ Event system for global communication in JavaScript.
 
 ## Facts
 
-📦 Small in size  
+📦 Small bundle size  
 🍃 Tree-shakable  
 📝 Well documented  
 🛡️ Strictly typed with TypeScript  
-♻️ Works between different browser tabs  
-🪝 Exports a convenient hook for **React** developers
+♻️ Works between different browser <u>tabs</u>  
+🪝 Exports a convenient hook for <u>React</u> developers
 
 <br/>
 
@@ -43,6 +43,8 @@ pnpm add use-app-events
   - Function to notify all listeners of the specified event type(s) subscribed via `listenForEvents`.
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
+- **listenForEvents.once**
+  - Function to subscribe and listen for the specified event type(s) to occur in the app **once**.
 - **useAppEvents**
   - Hook for managing application events in React.
 - **heap**
@@ -59,7 +61,7 @@ pnpm add use-app-events
 **Hook for managing application events in React.**
 
 ```ts
-useAppEvents<Type extends string>(args): result
+useAppEvents<EventType extends string>(args): result
   - args?: {
       /** When true, enables a debug mode in non-production environment. */
       debug: boolean;
@@ -68,20 +70,30 @@ useAppEvents<Type extends string>(args): result
   - result: {
       /** [Overload 1] Subscribe and listen for the specified event type to occur in the app. */
       function listenForEvents<Payload>(
-        eventType: Type,
-        callback: Callback<void> | Callback<Payload>
+        eventType: EventType,
+        callback:
+          | Callback<void>
+          | Callback<Payload>
+          | AsyncCallback<void>
+          | AsyncCallback<Payload>
       ): CleanupFunction;
 
       /** [Overload 2] Subscribe and listen for the specified event types to occur in the app. */
       function listenForEvents<Payload>(
-        eventTypes: Type[],
-        callback: Callback<void> | Callback<Type> | Callback<[Type, Payload]>
+        eventTypes: EventType[],
+        callback:
+          | Callback<void>
+          | Callback<Type>
+          | Callback<[Type, Payload]>
+          | AsyncCallback<void>
+          | AsyncCallback<Type>
+          | AsyncCallback<[Type, Payload]>
       ): CleanupFunction;
 
       /** [Overload 1] Notify all listeners of the specified event type subscribed via `listenForEvents`. */
       function notifyEventListeners<Payload>(
         /** Listeners of this event type will be notified. */
-        eventType: Type,
+        eventType: EventType,
         /** Data to send to listeners of this event type. */
         payload?: Payload,
         /** When false, the event is not sent to other browsing contexts. */
@@ -91,7 +103,7 @@ useAppEvents<Type extends string>(args): result
       /** [Overload 2] Notify all listeners of the specified event types subscribed via `listenForEvents`. */
       function notifyEventListeners<Payload>(
         /** Listeners of these event types will be notified. */
-        eventTypes: Type[],
+        eventTypes: EventType[],
         /** Data to send to listeners of these event types. */
         payload?: Payload,
         /** When false, the event is not sent to other browsing contexts. */
@@ -110,7 +122,7 @@ useAppEvents<Type extends string>(args): result
 
 ```tsx
 heap: {
-  /** The array of listeners used by active `listenForEvents` instances. */
+  /** The array of listeners used by the active `listenForEvents` instances. */
   eventListeners: Listener[];
 }
 ```
@@ -123,6 +135,9 @@ heap: {
 options: {
   /** When false, `notifyEventListeners` will not broadcast events to other browsing contexts by default. */
   broadcast: boolean = true;
+
+  /** When true, the debug mode will be enabled globally, resulting in additional logs. */
+  debug: boolean = false;
 }
 ```
 

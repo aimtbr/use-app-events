@@ -559,6 +559,8 @@ describe('useAppEvents', () => {
 
     expect(heap.eventListeners).toHaveLength(1);
     expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[0]).toHaveProperty('hasBeenCalled', true);
+    expect(heap.eventListeners[0].scopeKey).not.toBeUndefined();
     expect(listenForEventsCallback).toHaveBeenCalledTimes(1);
     expect(listenForEventsCallback).toHaveBeenCalledWith(firstPayload);
   });
@@ -585,6 +587,11 @@ describe('useAppEvents', () => {
     expect(heap.eventListeners[1]).toHaveProperty('hasBeenCalled', true);
     expect(heap.eventListeners[0].eventGroupId).toBe(
       heap.eventListeners[1].eventGroupId
+    );
+    expect(heap.eventListeners[0].scopeKey).not.toBeUndefined();
+    expect(heap.eventListeners[1].scopeKey).not.toBeUndefined();
+    expect(heap.eventListeners[0].scopeKey).toBe(
+      heap.eventListeners[1].scopeKey
     );
     expect(listenForEventsCallback).toHaveBeenCalledTimes(1);
     expect(listenForEventsCallback).toHaveBeenCalledWith(

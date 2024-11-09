@@ -107,11 +107,11 @@ describe('listenForEvents', () => {
   test('Listen for an event once', () => {
     const listenForEventsCallback = jest.fn();
 
-    listenForEvents(EventType.A, listenForEventsCallback);
     listenForEvents.once(EventType.A, listenForEventsCallback);
 
     expect(heap.eventListeners).toHaveLength(1);
     expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[0].scopeKey).toBeUndefined();
   });
 
   test('Listen for events once', () => {
@@ -125,5 +125,7 @@ describe('listenForEvents', () => {
     expect(heap.eventListeners[0].eventGroupId).toBe(
       heap.eventListeners[1].eventGroupId
     );
+    expect(heap.eventListeners[0].scopeKey).toBeUndefined();
+    expect(heap.eventListeners[1].scopeKey).toBeUndefined();
   });
 });

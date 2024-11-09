@@ -6,9 +6,9 @@ import { debugMessage } from '$utils';
 import { BaseNotifyEventListenersOptions } from './types';
 
 /** The `notifyEventListeners` factory. */
-function createNotifyEventListeners<EventType extends string>(
+const createNotifyEventListeners = <EventType extends string>(
   options?: BaseNotifyEventListenersOptions
-) {
+) => {
   const { debug: localDebug, scopeKey } = options || {};
 
   // TODO: move into a separate function
@@ -88,10 +88,12 @@ function createNotifyEventListeners<EventType extends string>(
               ignoredEventGroups.add(listener.eventGroupId);
             }
 
-            return void listener.callback(eventType, payload);
+            void listener.callback(eventType, payload);
           }
 
-          return void listener.callback(payload);
+          if (!listener.eventGroupId) {
+            void listener.callback(payload);
+          }
         }
       });
 
@@ -115,6 +117,6 @@ function createNotifyEventListeners<EventType extends string>(
   }
 
   return notifyEventListeners;
-}
+};
 
 export default createNotifyEventListeners;

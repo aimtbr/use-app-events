@@ -137,6 +137,7 @@ describe('Integration tests', () => {
 
     expect(heap.eventListeners).toHaveLength(1);
     expect(heap.eventListeners[0]).toHaveProperty('shouldBeCalledOnce', true);
+    expect(heap.eventListeners[0]).toHaveProperty('hasBeenCalled', true);
     expect(listenForEventsCallback).toHaveBeenCalledTimes(1);
     expect(listenForEventsCallback).toHaveBeenCalledWith(firstPayload);
   });

@@ -5,9 +5,9 @@ import { BaseListenForEventsOptions } from './types';
 import globalOptions from '$lib/options';
 
 /** The `listenForEvents` factory. */
-function createListenForEvents<EventType extends string>(
+const createListenForEvents = <EventType extends string>(
   options?: BaseListenForEventsOptions
-) {
+) => {
   const { debug: localDebug, scopeKey, shouldBeCalledOnce } = options || {};
 
   const hasScopeKey = typeof scopeKey === 'string';
@@ -91,6 +91,15 @@ function createListenForEvents<EventType extends string>(
       // 1.2 If there is a duplicate listener, overwrite it with a new one (in case its dependencies changed).
       const isDuplicateListener = duplicateListenerIndex !== -1;
       if (isDuplicateListener) {
+        const duplicateListener = heap.eventListeners[duplicateListenerIndex];
+
+        const extendedListener = {
+          ...duplicateListener,
+          scopeKey,
+          shouldBeCalledOnce,
+          callback,
+        };
+
         // DEBUG
         debugMessage(
           `[SUBSCRIPTION]${instanceId} Re-subscribed for the "${eventType}" event type.`,
@@ -98,7 +107,7 @@ function createListenForEvents<EventType extends string>(
         );
 
         heap.eventListeners = [...heap.eventListeners];
-        heap.eventListeners[duplicateListenerIndex] = newListener;
+        heap.eventListeners[duplicateListenerIndex] = extendedListener;
       }
 
       // 1.3 If the listener is unique (non-duplicate), add it right away.
@@ -124,15 +133,7 @@ function createListenForEvents<EventType extends string>(
     return unlisten;
   }
 
-  // const unlistenAll: CleanupFunction = () => {
-  //   if (hasScopeKey) {
-  //     heap.eventListeners = heap.eventListeners.filter(
-  //       (listener) => listener.scopeKey !== scopeKey
-  //     );
-  //   }
-  // };
-
   return listenForEvents;
-}
+};
 
 export default createListenForEvents;

@@ -12,7 +12,7 @@ Event system for global communication in JavaScript.
 
 ## Facts
 
-📦 Small in size  
+📦 Small bundle size  
 🍃 Tree-shakable  
 📝 Well documented  
 🛡️ Strictly typed with TypeScript  
@@ -43,6 +43,8 @@ pnpm add use-app-events
   - Function to notify all listeners of the specified event type(s) subscribed via `listenForEvents`.
 - **listenForEvents**
   - Function to subscribe and listen for the specified event type(s) to occur in the app.
+- **listenForEvents.once**
+  - Function to subscribe and listen for the specified event type(s) to occur in the app **once**.
 - **useAppEvents**
   - Hook for managing application events in React.
 - **heap**
@@ -66,4 +68,3 @@ MIT
 ## Author
 
 Maksym Marchuk
-

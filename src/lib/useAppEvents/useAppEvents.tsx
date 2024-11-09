@@ -3,14 +3,16 @@ import { debugMessage, generateId } from '$utils';
 import { createListenForEvents } from './listenForEvents';
 import { createNotifyEventListeners } from './notifyEventListeners';
 import heap from '$lib/heap';
+import globalOptions from '$lib/options';
 
 type UseAppEventsProps = {
   debug: boolean;
 };
 
 /** Hook for managing application events. */
-function useAppEvents<EventType extends string>(props?: UseAppEventsProps) {
-  const { debug } = props ?? {};
+const useAppEvents = <EventType extends string>(props?: UseAppEventsProps) => {
+  const { debug: localDebug } = props ?? {};
+  const debug = localDebug ?? globalOptions.debug;
 
   const scopeKey = useMemo(() => generateId(), []);
 
@@ -21,7 +23,7 @@ function useAppEvents<EventType extends string>(props?: UseAppEventsProps) {
     );
 
     /** Removes listeners created by this instance from `eventListeners`. */
-    const removeInstanceListeners = () => {
+    const unlistenAll = () => {
       heap.eventListeners = heap.eventListeners.filter(
         (listener) => listener.scopeKey !== scopeKey
       );
@@ -33,7 +35,7 @@ function useAppEvents<EventType extends string>(props?: UseAppEventsProps) {
         debug
       );
 
-      removeInstanceListeners();
+      unlistenAll();
     };
   }, [scopeKey, debug]);
 
@@ -52,6 +54,6 @@ function useAppEvents<EventType extends string>(props?: UseAppEventsProps) {
     listenForEvents,
     notifyEventListeners,
   };
-}
+};
 
 export default useAppEvents;
