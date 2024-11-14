@@ -1,40 +1,18 @@
 import heap from '$lib/heap';
 import { AsyncCallback, Callback, CleanupFunction, Listener } from '$types';
 import { debugMessage, generateId } from '$utils';
-import { BaseListenForEventsOptions } from './types';
+import { BaseListenForEvents, BaseListenForEventsOptions } from './types';
 import globalOptions from '$lib/options';
 
 /** The `listenForEvents` factory. */
-const createListenForEvents = <EventType extends string>(
+export const base_createListenForEvents = <EventType extends string>(
   options?: BaseListenForEventsOptions
-) => {
+): BaseListenForEvents<EventType> => {
   const { debug: localDebug, scopeKey, shouldBeCalledOnce } = options || {};
 
   const hasScopeKey = typeof scopeKey === 'string';
 
   const instanceId = hasScopeKey ? `(instance ${scopeKey})` : '';
-
-  /** Subscribe and listen for the specified event type to occur in the app. */
-  function listenForEvents<Type extends EventType, Payload>(
-    eventType: Type,
-    callback:
-      | Callback<void>
-      | Callback<Payload>
-      | AsyncCallback<void>
-      | AsyncCallback<Payload>
-  ): CleanupFunction;
-
-  /** Subscribe and listen for the specified event types to occur in the app. */
-  function listenForEvents<Type extends EventType, Payload>(
-    eventTypes: Type[],
-    callback:
-      | Callback<void>
-      | Callback<Type>
-      | Callback<[Type, Payload]>
-      | AsyncCallback<void>
-      | AsyncCallback<Type>
-      | AsyncCallback<[Type, Payload]>
-  ): CleanupFunction;
 
   function listenForEvents<Type extends EventType, Payload>(
     eventTypeOrTypes: Type | Type[],
@@ -135,5 +113,3 @@ const createListenForEvents = <EventType extends string>(
 
   return listenForEvents;
 };
-
-export default createListenForEvents;

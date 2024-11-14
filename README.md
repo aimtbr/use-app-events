@@ -12,7 +12,7 @@ Event system for global communication in JavaScript.
 
 ## Facts
 
-📦 Small bundle size  
+📦 Small package size  
 🍃 Tree-shakable  
 📝 Well documented  
 🛡️ Strictly typed with TypeScript  

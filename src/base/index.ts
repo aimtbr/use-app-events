@@ -1,2 +1,3 @@
-export { default as base_createListenForEvents } from './listenForEvents';
-export { default as base_createNotifyEventListeners } from './notifyEventListeners';
+export { base_createListenForEvents } from './listenForEvents';
+export { base_createNotifyEventListeners } from './notifyEventListeners';
+export * from './types';

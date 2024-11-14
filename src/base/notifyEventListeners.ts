@@ -3,38 +3,21 @@ import { createMessage } from '$broadcast/api';
 import heap from '$lib/heap';
 import globalOptions from '$lib/options';
 import { debugMessage } from '$utils';
-import { BaseNotifyEventListenersOptions } from './types';
+import {
+  BaseNotifyEventListeners,
+  BaseNotifyEventListenersOptions,
+} from './types';
 
 /** The `notifyEventListeners` factory. */
-const createNotifyEventListeners = <EventType extends string>(
+export const base_createNotifyEventListeners = <EventType extends string>(
   options?: BaseNotifyEventListenersOptions
-) => {
+): BaseNotifyEventListeners<EventType> => {
   const { debug: localDebug, scopeKey } = options || {};
 
   // TODO: move into a separate function
   // TODO: use different functions to generate different types of debug messages?
   const instanceId =
     typeof scopeKey === 'string' ? `(instance ${scopeKey})` : '';
-
-  /** Notify all listeners of the specified event type subscribed via `listenForEvents`. */
-  function notifyEventListeners<Payload, Type extends EventType>(
-    /** Listeners of this event type will be notified. */
-    eventType: Type,
-    /** Data to send to listeners of this event type. */
-    payload?: Payload,
-    /** When false, the event is not sent to other browsing contexts. */
-    broadcast?: boolean
-  ): void;
-
-  /** Notify all listeners of the specified event types subscribed via `listenForEvents`. */
-  function notifyEventListeners<Payload, Type extends EventType>(
-    /** Listeners of these event types will be notified. */
-    eventTypes: Type[],
-    /** Data to send to listeners of these event types. */
-    payload?: Payload,
-    /** When false, the event is not sent to other browsing contexts. */
-    broadcast?: boolean
-  ): void;
 
   function notifyEventListeners<Payload, Type extends EventType>(
     eventTypeOrTypes: Type | Type[],
@@ -118,5 +101,3 @@ const createNotifyEventListeners = <EventType extends string>(
 
   return notifyEventListeners;
 };
-
-export default createNotifyEventListeners;

@@ -65,10 +65,13 @@
       "import": "./dist/lib/notifyEventListeners.js"
     },
     "./useAppEvents": {
-      "import": "./dist/lib/useAppEvents.js"
+      "import": "./dist/lib/useAppEvents"
     },
     "./options": {
-      "import": "./dist/options.js"
+      "import": "./dist/lib/options.js"
+    },
+    "./heap": {
+      "import": "./dist/lib/heap.js"
     }
   },
   "keywords": [
@@ -83,3 +86,4 @@
     "context"
   ]
 }
+
