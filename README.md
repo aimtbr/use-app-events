@@ -2,7 +2,7 @@
 
 ![NPM Version](https://img.shields.io/npm/v/use-app-events?color=%2340bb12) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/use-app-events?color=%2340bb12) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/use-app-events)
 
-Event system for global communication in JavaScript.
+Event system for global communication in vanilla JavaScript and React.
 
 🌍 Organize and manage your global app state via events.  
 📨 Send events and data from one part of the app to another.  
