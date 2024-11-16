@@ -4,9 +4,9 @@
 
 Event system for global communication in vanilla JavaScript and React.
 
-🌍 Organize and manage your global app state via events.  
 📨 Send events and data from one part of the app to another.  
-📩 Listen for events to occur and process their payload.
+📩 Listen for events to occur in the app and process their payload.  
+🌍 Organize and manage your global app state via events.
 
 <br/>
 
