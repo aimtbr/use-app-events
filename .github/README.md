@@ -152,12 +152,22 @@ options: {
    import notifyEventListeners from 'use-app-events/notifyEventListeners';
    ```
 
-   a. Disable event broadcasting entirely
+   a. Disable event broadcasting globally
 
    ```tsx
    options.broadcast = false;
 
    // From now on, notifyEventListeners will send events to listeners of the current tab only by default
+   notifyEventListeners('event-A', 'some-payload');
+   ```
+
+   b. Enable the debug mode globally
+
+   ```tsx
+   options.debug = true;
+
+   // From now on, listenForEvents and notifyEventListeners will output additional console logs on different stages
+   listenForEvents('event-A', () => {});
    notifyEventListeners('event-A', 'some-payload');
    ```
 
@@ -203,7 +213,7 @@ options: {
    import { useAppEvents } from 'use-app-events';
    ```
 
-   a. Without a payload (only event)
+   a. Send an event
 
    ```tsx
    const Component = () => {
@@ -214,7 +224,7 @@ options: {
    };
    ```
 
-   b. With a payload (event + data)
+   b. Send an event with a payload
 
    ```tsx
    const Component = () => {
@@ -227,7 +237,20 @@ options: {
    };
    ```
 
-   c. Disable event broadcasting for a specific call
+   c. Send multiple events with a payload at once
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     const payload = { a: 1, b: 2 };
+
+     // Notify the listeners of these event types and give them some data
+     notifyEventListeners(['event-A', 'event-B'], payload);
+   };
+   ```
+
+   d. Send multiple events with a payload, but don't broadcast
 
    ```tsx
    const Component = () => {
@@ -237,6 +260,8 @@ options: {
 
      // Notify the listeners of this event type in the current tab only
      notifyEventListeners('event-A', payload, false);
+     // Notify the listeners of these event types in the current tab only
+     notifyEventListeners(['event-B', 'event-C'], payload, false);
    };
    ```
 
@@ -281,115 +306,6 @@ options: {
 ## Examples
 
 **[[See all examples]](https://github.com/aimtbr/use-app-events/blob/main/examples)**
-
-**1. Global theme state**  
-The example below demonstrates a potential implementation of the `useTheme` hook, which allows getting and updating a theme from any component of the app.
-
-```tsx
-enum EventType {
-  THEME_UPDATE = 'theme-update',
-}
-
-const useTheme = () => {
-  const [theme, setTheme] = useState('dark');
-
-  const { notifyEventListeners, listenForEvents } = useAppEvents<EventType>();
-
-  // 1. If any other instance of the useTheme hook has its theme value updated
-  listenForEvents(EventType.THEME_UPDATE, (themeNext: string) => {
-    // 1.1. Synchronize the theme value of this instance, with a new one
-    setTheme(themeNext);
-  });
-
-  const updateTheme = (themeNext: string) => {
-    setTheme(themeNext);
-
-    // 2. Notify all other useTheme hook instances about the changed value
-    notifyEventListeners(EventType.THEME_UPDATE, themeNext);
-  };
-
-  return {
-    theme,
-    updateTheme,
-  };
-};
-
-// Then use the useTheme hook anywhere in the app to get and update its value globally
-const App = () => {
-  const { theme, updateTheme } = useTheme();
-
-  updateTheme('light');
-
-  // Output: <div>Current theme: light</div>
-  return <div>Current theme: {theme}</div>;
-};
-```
-
----
-
-<br/>
-
-**2. Communication between components**  
-The example below demonstrates the potential use of `useAppEvents` to exchange messages (events) between unrelated components.
-
-_Note: this is a simplified example, click the link below to see the full one if needed._
-
-**[[See full source code]](https://github.com/aimtbr/use-app-events/blob/main/examples/global-communication)**
-
-```tsx
-enum EventType {
-  KEVIN_FOLLOWERS = 'kevin-followers',
-  JOHN_RELATIVES = 'john-relatives',
-}
-
-const GlobalCommunication = () => {
-  return (
-    <>
-      <h2>Global Communication</h2>
-
-      <SisterComponent />
-      <BrotherComponent />
-    </>
-  );
-};
-
-function SisterComponent() {
-  const { listenForEvents } = useAppEvents<EventType>();
-
-  // Listen for events of type KEVIN_FOLLOWERS
-  listenForEvents(EventType.KEVIN_FOLLOWERS, (messageNext: string) => {
-    // process a message from Kevin...
-  });
-
-  // Listen for events of type JOHN_RELATIVES
-  listenForEvents(EventType.JOHN_RELATIVES, (messageNext: string) => {
-    // process a message from John
-  });
-
-  return null;
-}
-
-function BrotherComponent() {
-  const { notifyEventListeners } = useAppEvents<EventType>();
-
-  // Send an event to the listeners of event JOHN_RELATIVES (Sister is listening)
-  notifyEventListeners(
-    EventType.JOHN_RELATIVES,
-    "Hello everyone, let's meet tomorrow!"
-  );
-
-  return <BrotherChildComponent />;
-}
-
-function BrotherChildComponent() {
-  const { notifyEventListeners } = useAppEvents<EventType>();
-
-  // Send an event to the listeners of event KEVIN_FOLLOWERS (Sister is listening)
-  notifyEventListeners(EventType.KEVIN_FOLLOWERS, "Hey, it's Kevin!");
-
-  return null;
-}
-```
 
 <br/>
 
