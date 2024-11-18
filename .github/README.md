@@ -13,7 +13,7 @@ Event system for global communication in vanilla JavaScript and React.
 ## Facts
 
 📦 Small package size  
-🍃 Tree-shakable  
+🍃 Tree-shakeable  
 📝 Well documented  
 🛡️ Strictly typed with TypeScript  
 ♻️ Works between different browser <u>tabs</u>  
@@ -55,8 +55,6 @@ pnpm add use-app-events
 <br/>
 
 ## API
-
-<br/>
 
 **Hook for managing application events in React.**
 
