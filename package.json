@@ -1,6 +1,6 @@
 {
   "name": "use-app-events",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "author": "Maksym Marchuk",
   "license": "MIT",
   "description": "Event system for global communication in vanilla JavaScript and React.",
