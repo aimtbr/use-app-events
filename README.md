@@ -17,7 +17,7 @@ Event system for global communication in vanilla JavaScript and React.
 📝 Well documented  
 🛡️ Strictly typed with TypeScript  
 ♻️ Works between different browser <u>tabs</u>  
-🪝 Exports a convenient hook for <u>React</u> developers
+⚛️ Exports a convenient hook for <u>React</u> developers
 
 <br/>
 
