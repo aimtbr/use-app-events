@@ -75,14 +75,18 @@
     }
   },
   "keywords": [
+    "events",
+    "event",
+    "event-emitter",
+    "event-dispatcher",
     "react",
     "global",
     "send",
     "receive",
-    "event",
     "message",
     "communication",
     "hook",
     "context"
   ]
 }
+
