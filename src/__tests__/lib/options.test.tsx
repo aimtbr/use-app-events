@@ -14,18 +14,23 @@ describe('options', () => {
   });
 
   test('Options reset correctly', () => {
-    const initialOptions = options;
+    // Clone the initial state of options
+    const initialOptions = JSON.parse(
+      JSON.stringify(options)
+    ) as typeof options;
 
+    // Update the initial values
     options.broadcast = !options.broadcast;
     options.debug = !options.debug;
 
-    const resetOptions = options.reset();
+    // Reset to the initial state
+    options.reset();
 
-    expect(resetOptions).toHaveProperty<boolean>(
+    expect(options).toHaveProperty<boolean>(
       'broadcast',
       initialOptions.broadcast
     );
-    expect(resetOptions).toHaveProperty<boolean>('debug', initialOptions.debug);
-    expect(resetOptions).toHaveProperty('reset');
+    expect(options).toHaveProperty<boolean>('debug', initialOptions.debug);
+    expect(options).toHaveProperty('reset');
   });
 });

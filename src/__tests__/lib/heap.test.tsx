@@ -12,16 +12,16 @@ describe('heap', () => {
   });
 
   test('Heap reset properly', () => {
-    const initialOptions = heap;
+    // Clone the initial state of the heap
+    const initialHeap = JSON.parse(JSON.stringify(heap)) as typeof heap;
 
-    heap.eventListeners = [];
+    // Update the initial value
+    heap.eventListeners = [{ eventType: 'anything', callback: () => {} }];
 
-    const resetOptions = heap.reset();
+    // Reset to the initial state
+    heap.reset();
 
-    expect(resetOptions).toHaveProperty(
-      'eventListeners',
-      initialOptions.eventListeners
-    );
-    expect(resetOptions).toHaveProperty('reset');
+    expect(heap).toHaveProperty('eventListeners', initialHeap.eventListeners);
+    expect(heap).toHaveProperty('reset');
   });
 });
