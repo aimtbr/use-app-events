@@ -1,6 +1,6 @@
 # use-app-events
 
-![NPM Version](https://img.shields.io/npm/v/use-app-events?color=%2340bb12) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/use-app-events?color=%2340bb12) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/use-app-events)
+![NPM Version](https://img.shields.io/npm/v/use-app-events?color=%2340bb12) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/use-app-events?color=%2340bb12) ![Code test coverage](https://img.shields.io/badge/coverage-100%25-40bb12?logo=100) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/use-app-events)
 
 Event system for global communication in vanilla JavaScript and React.
 
@@ -94,7 +94,7 @@ useAppEvents<EventType extends string>(args): result
         eventType: EventType,
         /** Data to send to listeners of this event type. */
         payload?: Payload,
-        /** When false, the event is not sent to other browsing contexts. */
+        /** When false, the event is not sent to other browsing contexts (tabs, windows). */
         broadcast?: boolean = options.broadcast
       ): void;
 
@@ -104,7 +104,7 @@ useAppEvents<EventType extends string>(args): result
         eventTypes: EventType[],
         /** Data to send to listeners of these event types. */
         payload?: Payload,
-        /** When false, the event is not sent to other browsing contexts. */
+        /** When false, the event is not sent to other browsing contexts (tabs, windows). */
         broadcast?: boolean = options.broadcast
       ): void;
     }
@@ -131,7 +131,7 @@ heap: {
 
 ```tsx
 options: {
-  /** When false, `notifyEventListeners` will not broadcast events to other browsing contexts by default. */
+  /** When false, `notifyEventListeners` will not broadcast events to other browsing contexts (tabs, windows) by default. */
   broadcast: boolean = true;
 
   /** When true, the debug mode will be enabled globally, resulting in additional logs. */

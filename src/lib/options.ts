@@ -1,5 +1,5 @@
 type Options = {
-  /** When false, `notifyEventListeners` will not broadcast events to other browsing contexts by default. */
+  /** When false, `notifyEventListeners` will not broadcast events to other browsing contexts (tabs, windows) by default. */
   broadcast: boolean;
 
   /** When true, the debug mode will be enabled globally, resulting in additional logs. */

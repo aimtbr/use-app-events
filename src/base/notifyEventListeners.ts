@@ -92,7 +92,7 @@ export const base_createNotifyEventListeners = <EventType extends string>(
         }
       });
 
-      // 3. Broadcast the occurred event to other browsing contexts.
+      // 3. Broadcast the occurred event to other browsing contexts (tabs, windows).
       if (broadcast) {
         broadcastMessage(createMessage(eventType, payload));
       }
