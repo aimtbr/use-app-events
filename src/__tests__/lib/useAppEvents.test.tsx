@@ -10,6 +10,11 @@ enum EventType {
 }
 
 describe('useAppEvents', () => {
+  afterEach(() => {
+    heap.reset();
+    options.reset();
+  });
+
   test('Send an event', () => {
     const message = 'New event!';
 
@@ -598,5 +603,21 @@ describe('useAppEvents', () => {
       EventType.A,
       firstPayload
     );
+  });
+
+  test('Unlisten all events created by this instance', () => {
+    const hook = renderHook(() => useAppEvents<EventType>());
+    const { listenForEvents } = hook.result.current;
+
+    const listenForEventsCallback = jest.fn();
+
+    listenForEvents(EventType.A, listenForEventsCallback);
+    listenForEvents(EventType.B, listenForEventsCallback);
+
+    expect(heap.eventListeners).toHaveLength(2);
+
+    hook.unmount();
+
+    expect(heap.eventListeners).toHaveLength(0);
   });
 });

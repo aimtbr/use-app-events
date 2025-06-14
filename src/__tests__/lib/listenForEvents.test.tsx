@@ -6,6 +6,10 @@ enum EventType {
 }
 
 describe('listenForEvents', () => {
+  afterEach(() => {
+    heap.reset();
+  });
+
   test('Listen for an event', async () => {
     const listenForEventsSpy = jest.spyOn(
       await import('$lib/listenForEvents'),

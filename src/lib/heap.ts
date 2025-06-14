@@ -6,7 +6,7 @@ type Heap = {
   eventListeners: Listener<any, any>[];
 
   /** Reset the heap to its initial state. */
-  reset: () => Heap;
+  reset: () => void;
 };
 
 /** Create a new heap object with initial values. */
@@ -15,7 +15,9 @@ const createHeap = (): Heap =>
     eventListeners: [],
 
     // TODO: make the `reset` property non-configurable
-    reset: () => Object.assign(heap, createHeap()),
+    reset: () => {
+      Object.assign(heap, createHeap());
+    },
   });
 
 const heap = createHeap();

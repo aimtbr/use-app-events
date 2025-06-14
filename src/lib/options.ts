@@ -6,7 +6,7 @@ type Options = {
   debug: boolean;
 
   /** Reset options to their initial state. */
-  reset: () => Options;
+  reset: () => void;
 };
 
 /** Create a new options object with initial values. */
@@ -17,7 +17,9 @@ const createOptions = (): Options =>
     debug: false,
 
     // TODO: make the `reset` property non-configurable
-    reset: () => Object.assign(options, createOptions()),
+    reset: () => {
+      Object.assign(options, createOptions());
+    },
   });
 
 const options = createOptions();

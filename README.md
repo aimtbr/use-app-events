@@ -16,7 +16,7 @@ Event system for global communication in vanilla JavaScript and React.
 🍃 Tree-shakeable  
 📝 Well documented  
 🛡️ Strictly typed with TypeScript  
-♻️ Works between different browser <u>tabs</u>  
+♻️ Events interact between different browser <u>tabs</u>  
 ⚛️ Exports a convenient hook for <u>React</u> developers
 
 <br/>

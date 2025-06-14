@@ -39,7 +39,6 @@ const useAppEvents = <EventType extends string>(props?: UseAppEventsProps) => {
     };
   }, [scopeKey, debug]);
 
-  // TODO: call unlistenAll on unmount?
   const listenForEvents = useMemo(
     () => createListenForEvents<EventType>({ scopeKey, debug }),
     [scopeKey, debug]

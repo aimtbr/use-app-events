@@ -1,6 +1,10 @@
 import { heap } from '$main';
 
 describe('heap', () => {
+  afterEach(() => {
+    heap.reset();
+  });
+
   test('Heap has all properties', () => {
     expect(heap).toHaveProperty('eventListeners');
     expect(heap).toHaveProperty('reset');
