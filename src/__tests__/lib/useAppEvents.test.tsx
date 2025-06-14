@@ -10,11 +10,6 @@ enum EventType {
 }
 
 describe('useAppEvents', () => {
-  afterEach(() => {
-    heap.reset();
-    options.reset();
-  });
-
   test('Send an event', () => {
     const message = 'New event!';
 

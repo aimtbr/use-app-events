@@ -8,11 +8,6 @@ enum EventType {
 }
 
 describe('Integration tests', () => {
-  afterEach(() => {
-    heap.reset();
-    options.reset();
-  });
-
   test('Send an event from one instance to another', async () => {
     const message = 'New event!';
 

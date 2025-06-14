@@ -1,10 +1,6 @@
 import { options } from '$main';
 
 describe('options', () => {
-  afterEach(() => {
-    options.reset();
-  });
-
   test('Options have all properties', () => {
     expect(options).toHaveProperty('broadcast');
     expect(options).toHaveProperty('debug');

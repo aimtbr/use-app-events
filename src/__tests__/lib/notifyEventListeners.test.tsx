@@ -7,10 +7,6 @@ enum EventType {
 }
 
 describe('notifyEventListeners', () => {
-  afterEach(() => {
-    options.reset();
-  });
-
   test('Send an event with a payload', async () => {
     const payload = 'Hi';
 
