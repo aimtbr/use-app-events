@@ -3,8 +3,9 @@
   "version": "1.7.2",
   "author": "Maksym Marchuk",
   "license": "MIT",
-  "description": "Event system for global communication in vanilla JavaScript and React.",
+  "description": "Create, trigger and listen for custom events in vanilla JavaScript and React.",
   "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "type": "module",
   "engines": {
     "node": "^18.0.0 || ^20.0.0 || ^22.0.0"
@@ -79,15 +80,17 @@
   "keywords": [
     "events",
     "event",
+    "emit",
+    "trigger",
+    "EventEmitter",
+    "Event",
+    "CustomEvent",
     "event-emitter",
+    "listener",
     "event-dispatcher",
     "react",
-    "global",
+    "listen",
     "send",
-    "receive",
-    "message",
-    "communication",
-    "hook",
-    "context"
+    "receive"
   ]
 }

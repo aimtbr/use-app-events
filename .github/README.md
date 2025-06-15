@@ -2,10 +2,7 @@
 
 ![NPM Version](https://img.shields.io/npm/v/use-app-events?color=%2340bb12) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/use-app-events?color=%2340bb12) ![Code test coverage](https://img.shields.io/badge/coverage-100%25-40bb12?logo=100) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/use-app-events)
 
-Event system for global communication in vanilla JavaScript and React.
-
-📨 Emit events with some data  
-📩 Listen for the emitted events (and process the sent data)
+Create, trigger and listen for custom events in vanilla JavaScript and React.
 
 <br/>
 
@@ -24,23 +21,26 @@ Event system for global communication in vanilla JavaScript and React.
 import { notifyEventListeners, listenForEvents } from 'use-app-events';
 
 // 1. Listen for an event
-listenForEvents('event-1', () => {
+listenForEvents('media-resume', () => {
   // do something when the event is emitted
 });
 
 // 2. Emit an event
-notifyEventListeners('event-1');
+notifyEventListeners('media-resume');
 
 // 3. Listen for an event (it will only be processed once here)
-listenForEvents.once('event-2', async (url) => {
+listenForEvents.once('load-resource', async (url) => {
   await fetch(url);
 });
 
 // 4. Emit an event with some data
-notifyEventListeners('event-2', 'https://www.npmjs.com/package/use-app-events');
+notifyEventListeners(
+  'load-resource',
+  'https://www.npmjs.com/package/use-app-events'
+);
 
 // 5. Listen for multiple events
-listenForEvents(['event-1', 'event-2'], (eventType, url) => {
+const unlisten = listenForEvents(['event-1', 'event-2'], (eventType, url) => {
   if (eventType === 'event-1') {
     // do something when 'event-1' is emitted
   }
@@ -50,7 +50,10 @@ listenForEvents(['event-1', 'event-2'], (eventType, url) => {
   }
 });
 
-// 6. Emit multiple events with some data
+// 6. Stop listening for events
+unlisten();
+
+// 7. Emit multiple events with some data
 notifyEventListeners(
   ['event-1', 'event-2'],
   'https://www.npmjs.com/package/use-app-events'
