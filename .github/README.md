@@ -4,20 +4,58 @@
 
 Event system for global communication in vanilla JavaScript and React.
 
-📨 Send events and data from one part of the app to another.  
-📩 Listen for events to occur in the app and process their payload.  
-🌍 Organize and manage your global app state via events.
+📨 Emit events with some data  
+📩 Listen for the emitted events (and process the sent data)
 
 <br/>
 
-## Facts
+> 📦 Small package (~<u>19 kB</u>)  
+> 🍃 Tree-shakeable  
+> 📝 Well documented  
+> 🛡️ Strictly typed with TypeScript  
+> ♻️ Events interact with each other across different browser tabs  
+> ⚛️ Exports a convenient hook for <u>React</u> developers
 
-📦 Small package size  
-🍃 Tree-shakeable  
-📝 Well documented  
-🛡️ Strictly typed with TypeScript  
-♻️ Events interact between different browser <u>tabs</u>  
-⚛️ Exports a convenient hook for <u>React</u> developers
+<br/>
+
+## Examples
+
+```js
+import { notifyEventListeners, listenForEvents } from 'use-app-events';
+
+// 1. Listen for an event
+listenForEvents('event-1', () => {
+  // do something when the event is emitted
+});
+
+// 2. Emit an event
+notifyEventListeners('event-1');
+
+// 3. Listen for an event (it will only be processed once here)
+listenForEvents.once('event-2', async (url) => {
+  await fetch(url);
+});
+
+// 4. Emit an event with some data
+notifyEventListeners('event-2', 'https://www.npmjs.com/package/use-app-events');
+
+// 5. Listen for multiple events
+listenForEvents(['event-1', 'event-2'], (eventType, url) => {
+  if (eventType === 'event-1') {
+    // do something when 'event-1' is emitted
+  }
+
+  if (eventType === 'event-2') {
+    // do something when 'event-2' is emitted
+  }
+});
+
+// 6. Emit multiple events with some data
+notifyEventListeners(
+  ['event-1', 'event-2'],
+  'https://www.npmjs.com/package/use-app-events'
+);
+```
 
 <br/>
 
@@ -51,6 +89,168 @@ pnpm add use-app-events
   - _(readonly)_ Collection of resources operated by the package.
 - **options**
   - Collection of options used to adjust the behavior of the package.
+
+<br/>
+
+## How to use
+
+1. **Listen for events in React**
+
+   ```ts
+   import { useAppEvents } from 'use-app-events';
+   ```
+
+   a. Listen for an event
+
+   ```tsx
+   const Component = () => {
+     const { listenForEvents } = useAppEvents();
+
+     listenForEvents('event-A', (payload) => {
+       // 1. Do something when 'event-A' is triggered...
+       // 2. Process a payload if you expect it to be sent by `notifyEventListeners`
+     });
+   };
+   ```
+
+   b. Listen for multiple events
+
+   ```tsx
+   const Component = () => {
+     const { listenForEvents } = useAppEvents();
+
+     listenForEvents(['event-A', 'event-B'], (eventType, payload) => {
+       // 1. Do something when either 'event-A' or 'event-B' is triggered...
+
+       // 2. Process a specific event by its type in `eventType`
+       if (eventType === 'event-A') {
+         console.log('We got an event A with some data', payload);
+       }
+     });
+   };
+   ```
+
+2. **Notify the event listeners in React**
+
+   a. Trigger an event
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     // Notify the listeners of this event type with no data
+     notifyEventListeners('event-A');
+   };
+   ```
+
+   b. Trigger an event with some data
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     const payload = { a: 1, b: 2 };
+
+     // Notify the listeners of this event type and give them some data
+     notifyEventListeners('event-A', payload);
+   };
+   ```
+
+   c. Trigger multiple events with some data at once
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     const payload = { a: 1, b: 2 };
+
+     // Notify the listeners of these event types and give them some data
+     notifyEventListeners(['event-A', 'event-B'], payload);
+   };
+   ```
+
+   d. Trigger multiple events with some data, but don't broadcast
+
+   ```tsx
+   const Component = () => {
+     const { notifyEventListeners } = useAppEvents();
+
+     const payload = { a: 1, b: 2 };
+
+     // Notify the listeners of this event type in the current tab only
+     notifyEventListeners('event-A', payload, false);
+     // Notify the listeners of these event types in the current tab only
+     notifyEventListeners(['event-B', 'event-C'], payload, false);
+   };
+   ```
+
+3. **Adjust options**
+
+   ```tsx
+   import options from 'use-app-events/options';
+   import notifyEventListeners from 'use-app-events/notifyEventListeners';
+   ```
+
+   a. Disable event broadcasting globally
+
+   ```tsx
+   options.broadcast = false;
+
+   // From now on, notifyEventListeners will send events to the listeners of the current tab only by default
+   notifyEventListeners('event-A', 'some-payload');
+   ```
+
+   b. Enable the debug mode globally
+
+   ```tsx
+   options.debug = true;
+
+   // From now on, listenForEvents and notifyEventListeners will output additional console logs on different stages
+   listenForEvents('event-A', () => {});
+   notifyEventListeners('event-A', 'some-payload');
+   ```
+
+<br/>
+
+## TypeScript
+
+- It is recommended to have a list of event types that can be used in your app, for example, enum called `EventType`, and pass it to `useAppEvents()` for type safety and misprint-proof:
+  ![EventType passed to useAppEvents as a type](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-1.png)
+
+  <br/>
+
+  <ins>This way you are protected from the unexpected event types...</ins>
+
+  <br/>
+
+  ![Unacceptable type passed as the event type to listenForEvents](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-2.png)
+
+  <br/>
+
+  <ins>...and only allowed to use the expected ones.</ins>
+
+  <br/>
+
+  ![The expected allowed event type passed to listenForEvents](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-3.png)
+  ![The expected allowed event type passed to notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-4.png)
+
+  <br/>
+
+- However, if `EventType` is not provided, any `string` or `enum` can be used:
+  ![Plain string passed as the event type to listenForEvents and notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-5.png)
+
+<br/>
+
+## Use cases
+
+- **[Don't use React.createContext(), create hooks.](https://dev.to/maqs/dont-use-reactcontext-create-hooks-40a9)**
+- **[Send data between tabs in React.](https://dev.to/maqs/send-data-between-tabs-in-react-obk)**
+
+<br/>
+
+## Examples
+
+**[[See all examples]](https://github.com/aimtbr/use-app-events/blob/main/examples)**
 
 <br/>
 
@@ -138,172 +338,6 @@ options: {
   debug: boolean = false;
 }
 ```
-
-<br/>
-
-## How to use
-
-1. **Adjust options**
-
-   ```tsx
-   import options from 'use-app-events/options';
-   import notifyEventListeners from 'use-app-events/notifyEventListeners';
-   ```
-
-   a. Disable event broadcasting globally
-
-   ```tsx
-   options.broadcast = false;
-
-   // From now on, notifyEventListeners will send events to listeners of the current tab only by default
-   notifyEventListeners('event-A', 'some-payload');
-   ```
-
-   b. Enable the debug mode globally
-
-   ```tsx
-   options.debug = true;
-
-   // From now on, listenForEvents and notifyEventListeners will output additional console logs on different stages
-   listenForEvents('event-A', () => {});
-   notifyEventListeners('event-A', 'some-payload');
-   ```
-
-2. **Listen for events in the React component**
-
-   ```ts
-   import { useAppEvents } from 'use-app-events';
-   ```
-
-   a. Single event
-
-   ```tsx
-   const Component = () => {
-     const { listenForEvents } = useAppEvents();
-
-     listenForEvents('event-A', (payload) => {
-       // 1. Do something when 'event-A' occurs...
-       // 2. Process a payload if you expect it to be sent by `notifyEventListeners`
-     });
-   };
-   ```
-
-   b. Multiple events
-
-   ```tsx
-   const Component = () => {
-     const { listenForEvents } = useAppEvents();
-
-     listenForEvents(['event-A', 'event-B'], (eventType, payload) => {
-       // 1. Do something when either 'event-A' or 'event-B' occurs...
-
-       // 2. Select a specific event by its type from `eventType`
-       if (eventType === 'event-A') {
-         console.log('We got an event A with some data', payload);
-       }
-     });
-   };
-   ```
-
-3. **Notify the event listeners from the React component**
-
-   ```tsx
-   import { useAppEvents } from 'use-app-events';
-   ```
-
-   a. Send an event
-
-   ```tsx
-   const Component = () => {
-     const { notifyEventListeners } = useAppEvents();
-
-     // Notify the listeners of this event type with no data
-     notifyEventListeners('event-A');
-   };
-   ```
-
-   b. Send an event with a payload
-
-   ```tsx
-   const Component = () => {
-     const { notifyEventListeners } = useAppEvents();
-
-     const payload = { a: 1, b: 2 };
-
-     // Notify the listeners of this event type and give them some data
-     notifyEventListeners('event-A', payload);
-   };
-   ```
-
-   c. Send multiple events with a payload at once
-
-   ```tsx
-   const Component = () => {
-     const { notifyEventListeners } = useAppEvents();
-
-     const payload = { a: 1, b: 2 };
-
-     // Notify the listeners of these event types and give them some data
-     notifyEventListeners(['event-A', 'event-B'], payload);
-   };
-   ```
-
-   d. Send multiple events with a payload, but don't broadcast
-
-   ```tsx
-   const Component = () => {
-     const { notifyEventListeners } = useAppEvents();
-
-     const payload = { a: 1, b: 2 };
-
-     // Notify the listeners of this event type in the current tab only
-     notifyEventListeners('event-A', payload, false);
-     // Notify the listeners of these event types in the current tab only
-     notifyEventListeners(['event-B', 'event-C'], payload, false);
-   };
-   ```
-
-<br/>
-
-## TypeScript
-
-- It is recommended to have a list of event types that can be used in your app, for example, enum called `EventType`, and pass it to `useAppEvents()` for type safety and misprint-proof:
-  ![EventType passed to useAppEvents as a type](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-1.png)
-
-  <br/>
-
-  <ins>This way you are protected from the unexpected event types...</ins>
-
-  <br/>
-
-  ![Unacceptable type passed as the event type to listenForEvents](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-2.png)
-
-  <br/>
-
-  <ins>...and only allowed to use the expected ones.</ins>
-
-  <br/>
-
-  ![The expected allowed event type passed to listenForEvents](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-3.png)
-  ![The expected allowed event type passed to notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-4.png)
-
-  <br/>
-
-- However, if `EventType` is not provided, any `string` or `enum` can be used:
-  ![Plain string passed as the event type to listenForEvents and notifyEventListeners](https://raw.githubusercontent.com/aimtbr/use-app-events/main/.github/image-5.png)
-
-<br/>
-
-## Use cases
-
-- **[Don't use React.createContext(), create hooks.](https://dev.to/maqs/dont-use-reactcontext-create-hooks-40a9)**
-- **[Send data between tabs in React.](https://dev.to/maqs/send-data-between-tabs-in-react-obk)**
-
-<br/>
-
-## Examples
-
-**[[See all examples]](https://github.com/aimtbr/use-app-events/blob/main/examples)**
 
 <br/>
 

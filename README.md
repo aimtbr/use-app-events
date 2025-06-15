@@ -4,20 +4,58 @@
 
 Event system for global communication in vanilla JavaScript and React.
 
-📨 Send events and data from one part of the app to another.  
-📩 Listen for events to occur in the app and process their payload.  
-🌍 Organize and manage your global app state via events.
+📨 Emit events with some data  
+📩 Listen for the emitted events (and process the sent data)
 
 <br/>
 
-## Facts
+> 📦 Small package (~<u>19 kB</u>)  
+> 🍃 Tree-shakeable  
+> 📝 Well documented  
+> 🛡️ Strictly typed with TypeScript  
+> ♻️ Events interact with each other across different browser tabs  
+> ⚛️ Exports a convenient hook for <u>React</u> developers
 
-📦 Small package size  
-🍃 Tree-shakeable  
-📝 Well documented  
-🛡️ Strictly typed with TypeScript  
-♻️ Events interact between different browser <u>tabs</u>  
-⚛️ Exports a convenient hook for <u>React</u> developers
+<br/>
+
+## Examples
+
+```js
+import { notifyEventListeners, listenForEvents } from 'use-app-events';
+
+// 1. Listen for an event
+listenForEvents('event-1', () => {
+  // do something when the event is emitted
+});
+
+// 2. Emit an event
+notifyEventListeners('event-1');
+
+// 3. Listen for an event (it will only be processed once here)
+listenForEvents.once('event-2', async (url) => {
+  await fetch(url);
+});
+
+// 4. Emit an event with some data
+notifyEventListeners('event-2', 'https://www.npmjs.com/package/use-app-events');
+
+// 5. Listen for multiple events
+listenForEvents(['event-1', 'event-2'], (eventType, url) => {
+  if (eventType === 'event-1') {
+    // do something when 'event-1' is emitted
+  }
+
+  if (eventType === 'event-2') {
+    // do something when 'event-2' is emitted
+  }
+});
+
+// 6. Emit multiple events with some data
+notifyEventListeners(
+  ['event-1', 'event-2'],
+  'https://www.npmjs.com/package/use-app-events'
+);
+```
 
 <br/>
 
