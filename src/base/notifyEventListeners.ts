@@ -19,14 +19,14 @@ export const base_createNotifyEventListeners = <EventType extends string>(
   const instanceId =
     typeof scopeKey === 'string' ? `(instance ${scopeKey})` : '';
 
-  function notifyEventListeners<Payload, Type extends EventType>(
-    eventTypeOrTypes: Type | Type[],
-    payload?: Payload,
-    broadcast: boolean = globalOptions.broadcast
-  ): void {
+  const notifyEventListeners: BaseNotifyEventListeners<EventType> = (
+    eventTypeOrTypes,
+    payload,
+    broadcast = globalOptions.broadcast
+  ) => {
     const debug = localDebug ?? globalOptions.debug;
 
-    let eventTypes: Type[];
+    let eventTypes: EventType[];
 
     const hasMultipleTypes = Array.isArray(eventTypeOrTypes);
     if (hasMultipleTypes) {
@@ -97,7 +97,7 @@ export const base_createNotifyEventListeners = <EventType extends string>(
         broadcastMessage(createMessage(eventType, payload));
       }
     });
-  }
+  };
 
   return notifyEventListeners;
 };

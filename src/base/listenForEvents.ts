@@ -1,5 +1,5 @@
 import heap from '$lib/heap';
-import { AsyncCallback, Callback, CleanupFunction, Listener } from '$types';
+import { CleanupFunction, Listener } from '$types';
 import { debugMessage, generateId } from '$utils';
 import { BaseListenForEvents, BaseListenForEventsOptions } from './types';
 import globalOptions from '$lib/options';
@@ -14,23 +14,15 @@ export const base_createListenForEvents = <EventType extends string>(
 
   const instanceId = hasScopeKey ? `(instance ${scopeKey})` : '';
 
-  function listenForEvents<Type extends EventType, Payload>(
-    eventTypeOrTypes: Type | Type[],
-    callback:
-      | Callback<void>
-      | Callback<Payload>
-      | Callback<Type>
-      | Callback<[Type, Payload]>
-      | AsyncCallback<void>
-      | AsyncCallback<Payload>
-      | AsyncCallback<Type>
-      | AsyncCallback<[Type, Payload]>
+  const listenForEvents: BaseListenForEvents<EventType> = function (
+    eventTypeOrTypes,
+    callback
   ): CleanupFunction {
     const debug = localDebug ?? globalOptions.debug;
 
-    const createdListeners: Listener<Type>[] = [];
+    const createdListeners: Listener<EventType>[] = [];
     let eventGroupId: string;
-    let eventTypes: Type[];
+    let eventTypes: EventType[];
 
     // 1. Make sure eventTypes contains an array of event types
     const hasMultipleTypes = Array.isArray(eventTypeOrTypes);
@@ -58,7 +50,7 @@ export const base_createListenForEvents = <EventType extends string>(
         }
       );
 
-      const newListener: Listener<Type> = {
+      const newListener: Listener<EventType> = {
         eventType,
         callback,
         scopeKey,
@@ -109,7 +101,7 @@ export const base_createListenForEvents = <EventType extends string>(
     };
 
     return unlisten;
-  }
+  };
 
   return listenForEvents;
 };

@@ -27,10 +27,8 @@ export type BaseListenForEvents<EventType extends string> = {
     eventTypes: Type[],
     callback:
       | Callback<void>
-      | Callback<Type>
       | Callback<[Type, Payload]>
       | AsyncCallback<void>
-      | AsyncCallback<Type>
       | AsyncCallback<[Type, Payload]>
   ): CleanupFunction;
 };
