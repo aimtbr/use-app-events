@@ -370,7 +370,7 @@ git clone https://github.com/aimtbr/use-app-events.git && cd use-app-events && n
 
 ## License
 
-MIT
+[MIT](https://github.com/aimtbr/use-app-events/blob/main/LICENSE)
 
 ## Author
 

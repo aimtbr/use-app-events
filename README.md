@@ -104,7 +104,7 @@ pnpm add use-app-events
 
 ## License
 
-MIT
+[MIT](https://github.com/aimtbr/use-app-events/blob/main/LICENSE)
 
 ## Author
 
