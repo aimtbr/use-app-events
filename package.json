@@ -1,6 +1,6 @@
 {
   "name": "use-app-events",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "author": "Maksym Marchuk",
   "license": "MIT",
   "description": "Create, trigger and listen for custom events in vanilla JavaScript and React.",
