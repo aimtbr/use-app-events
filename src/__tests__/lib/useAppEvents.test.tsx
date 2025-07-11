@@ -1,5 +1,5 @@
 import { createMessage } from '$broadcast/api';
-import { heap, options, useAppEvents } from '$main';
+import { heap, options, useAppEvents } from '$';
 import { renderHook } from '@testing-library/react';
 
 enum EventType {

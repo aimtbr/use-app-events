@@ -1,4 +1,4 @@
-import { heap, options } from '$main';
+import { heap, options } from '$';
 
 afterEach(() => {
   jest.restoreAllMocks();

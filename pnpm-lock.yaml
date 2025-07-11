@@ -14,6 +14,9 @@ importers:
       react-dom:
         specifier: ^17.0.0 || ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
+      use-app-events:
+        specifier: ^1.7.4
+        version: 1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.27.4
@@ -3474,6 +3477,13 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  use-app-events@1.7.4:
+    resolution: {integrity: sha512-kfLIB5r1hE6r0PwdSwuqoZPqdo1Dqu8/h97aAFKJHRLcUGMDM4kEJP0fhklQTeAJYT+TBrERA1diHSwWWNBJRg==}
+    engines: {node: ^18.0.0 || ^20.0.0 || ^22.0.0}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
@@ -7684,6 +7694,11 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  use-app-events@1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   v8-compile-cache-lib@3.0.1: {}
 

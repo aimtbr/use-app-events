@@ -1,4 +1,4 @@
-import { heap, listenForEvents } from '$main';
+import { heap, listenForEvents } from '$';
 
 enum EventType {
   A = 'event-a',

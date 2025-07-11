@@ -1,4 +1,4 @@
-import { heap } from '$main';
+import { heap } from '$';
 
 describe('heap', () => {
   test('Heap has all properties', () => {

@@ -1,4 +1,4 @@
-import { options } from '$main';
+import { options } from '$';
 
 describe('options', () => {
   test('Options have all properties', () => {
