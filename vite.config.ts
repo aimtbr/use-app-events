@@ -15,8 +15,6 @@ export default defineConfig({
       tsconfigPath: path.resolve(__dirname, './tsconfig.app.json'),
       include: ['src'],
       exclude: ['src/__tests__', 'src/examples', 'src/vite-env.d.ts'],
-      rollupTypes: true,
-      insertTypesEntry: true,
     }),
   ],
   resolve: {
