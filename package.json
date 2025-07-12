@@ -17,8 +17,6 @@
     "lint": "eslint .",
     "test": "jest",
     "coverage": "jest --collectCoverage",
-    "patch": "pnpm version patch",
-    "minor": "pnpm version minor",
     "publish:npm": "git push origin HEAD && pnpm build && pnpm publish"
   },
   "repository": "github:aimtbr/use-app-events",
