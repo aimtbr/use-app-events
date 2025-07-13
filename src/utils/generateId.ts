@@ -3,7 +3,7 @@ const SUFFIX_DEFAULT: string = ':';
 
 let instanceId: number = 0;
 
-const generateId = (prefix = PREFIX_DEFAULT): string => {
+export const generateId = (prefix = PREFIX_DEFAULT): string => {
   instanceId += 1;
 
   const id = `${prefix}${instanceId}${SUFFIX_DEFAULT}`;
@@ -11,4 +11,3 @@ const generateId = (prefix = PREFIX_DEFAULT): string => {
   return id;
 };
 
-export default generateId;

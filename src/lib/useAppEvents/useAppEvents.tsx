@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { debugMessage, generateId } from '$utils';
+import { debugMessage } from '$utils/debugMessage';
+import { generateId } from '$utils/generateId';
 import { createListenForEvents } from './listenForEvents';
 import { createNotifyEventListeners } from './notifyEventListeners';
 import heap from '$lib/heap';

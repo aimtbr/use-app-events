@@ -4,8 +4,10 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
+import noBarrelFiles from 'eslint-plugin-no-barrel-files';
 
 export default tseslint.config(
+  noBarrelFiles.flat,
   { ignores: ['dist', 'coverage'] },
   {
     settings: { react: { version: '18.3' } },

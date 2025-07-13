@@ -14,9 +14,6 @@ importers:
       react-dom:
         specifier: ^17.0.0 || ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
-      use-app-events:
-        specifier: ^1.7.4
-        version: 1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.27.4
@@ -60,6 +57,9 @@ importers:
       eslint:
         specifier: ^9.29.0
         version: 9.29.0
+      eslint-plugin-no-barrel-files:
+        specifier: ^1.2.1
+        version: 1.2.1(eslint@9.29.0)(typescript@5.8.3)
       eslint-plugin-react:
         specifier: ^7.37.5
         version: 7.37.5(eslint@9.29.0)
@@ -2039,6 +2039,9 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
+  eslint-plugin-no-barrel-files@1.2.1:
+    resolution: {integrity: sha512-WoZ48JXa99yptWwWWAKmuKNgvgA6tpSol6Cf0GzXs2Lg/JdBqe+CF58Bf8saEpYJRA+6+cTzP90nI7U7zoy5IQ==}
+
   eslint-plugin-react-hooks@5.2.0:
     resolution: {integrity: sha512-+f15FfK64YQwZdJNELETdn5ibXEUQmW1DZL6KXhNnc2heoy/sg9VJJeT7n8TlMWouzWqSWavFkIhHyIbIAEapg==}
     engines: {node: '>=10'}
@@ -3477,13 +3480,6 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
-
-  use-app-events@1.7.4:
-    resolution: {integrity: sha512-kfLIB5r1hE6r0PwdSwuqoZPqdo1Dqu8/h97aAFKJHRLcUGMDM4kEJP0fhklQTeAJYT+TBrERA1diHSwWWNBJRg==}
-    engines: {node: ^18.0.0 || ^20.0.0 || ^22.0.0}
-    peerDependencies:
-      react: ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
@@ -5937,6 +5933,14 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
+  eslint-plugin-no-barrel-files@1.2.1(eslint@9.29.0)(typescript@5.8.3):
+    dependencies:
+      '@typescript-eslint/utils': 8.34.1(eslint@9.29.0)(typescript@5.8.3)
+    transitivePeerDependencies:
+      - eslint
+      - supports-color
+      - typescript
+
   eslint-plugin-react-hooks@5.2.0(eslint@9.29.0):
     dependencies:
       eslint: 9.29.0
@@ -7694,11 +7698,6 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
-
-  use-app-events@1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
 
   v8-compile-cache-lib@3.0.1: {}
 

@@ -1,1 +1,1 @@
-export { default as broadcastMessage } from './api/broadcastMessage';
+export { broadcastMessage } from './api/broadcastMessage';

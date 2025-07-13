@@ -1,4 +1,5 @@
-import { type BaseListenForEvents, base_createListenForEvents } from '$base';
+import { base_createListenForEvents } from '$base/listenForEvents/listenForEvents';
+import { type BaseListenForEvents } from '$base/listenForEvents/types';
 import { Extend } from '$types';
 
 type ListenForEvents<EventType extends string = string> = Extend<
