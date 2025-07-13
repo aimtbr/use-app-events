@@ -1,4 +1,4 @@
-import { notifyEventListeners } from '$';
+import { base_createNotifyEventListeners } from '$base/notifyEventListeners/notifyEventListeners';
 import { verifyMessage } from './utils/verifyMessage';
 import { BroadcastMessage } from './types';
 
@@ -19,7 +19,7 @@ if (globalThis?.BroadcastChannel) {
           const { eventType, payload } = data;
 
           // 3. Notify the local event listeners about the event that occurred.
-          notifyEventListeners(eventType, payload, false);
+          base_createNotifyEventListeners()(eventType, payload, false);
         }
       }
     );
