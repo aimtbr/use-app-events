@@ -1,4 +1,4 @@
-import { createMessage } from '$broadcast/api';
+import { createMessage } from '$broadcast/utils/createMessage';
 import { notifyEventListeners, options } from '$';
 
 enum EventType {
@@ -69,8 +69,8 @@ describe('notifyEventListeners', () => {
     const payload = 'Hi';
 
     const broadcastMessageSpy = jest.spyOn(
-      await import('$broadcast/api/broadcastMessage'),
-      'default'
+      await import('$broadcast/broadcastMessage'),
+      'broadcastMessage'
     );
 
     const notifyEventListenersSpy = jest.spyOn(
@@ -126,8 +126,8 @@ describe('notifyEventListeners', () => {
     const payload = 'Hi';
 
     const broadcastMessageSpy = jest.spyOn(
-      await import('$broadcast/api/broadcastMessage'),
-      'default'
+      await import('$broadcast/broadcastMessage'),
+      'broadcastMessage'
     );
 
     const notifyEventListenersSpy = jest.spyOn(
@@ -166,8 +166,8 @@ describe('notifyEventListeners', () => {
     const payload = 'Hi';
 
     const broadcastMessageSpy = jest.spyOn(
-      await import('$broadcast/api/broadcastMessage'),
-      'default'
+      await import('$broadcast/broadcastMessage'),
+      'broadcastMessage'
     );
 
     const notifyEventListenersSpy = jest.spyOn(

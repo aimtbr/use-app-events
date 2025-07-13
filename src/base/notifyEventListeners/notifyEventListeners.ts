@@ -1,8 +1,8 @@
-import { broadcastMessage } from '$broadcast';
-import { createMessage } from '$broadcast/api';
+import { broadcastMessage } from '$broadcast/broadcastMessage';
+import { createMessage } from '$broadcast/utils/createMessage';
 import heap from '$lib/heap';
 import globalOptions from '$lib/options';
-import { debugMessage } from '$utils';
+import { debugMessage } from '$utils/debugMessage';
 import {
   BaseNotifyEventListeners,
   BaseNotifyEventListenersOptions,

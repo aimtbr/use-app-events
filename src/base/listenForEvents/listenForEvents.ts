@@ -1,6 +1,7 @@
 import heap from '$lib/heap';
 import { CleanupFunction, Listener } from '$types';
-import { debugMessage, generateId } from '$utils';
+import { debugMessage } from '$utils/debugMessage';
+import { generateId } from '$utils/generateId';
 import { BaseListenForEvents, BaseListenForEventsOptions } from './types';
 import globalOptions from '$lib/options';
 

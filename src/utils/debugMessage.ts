@@ -1,4 +1,4 @@
-const debugMessage = (message: string, debug: boolean | undefined) => {
+export const debugMessage = (message: string, debug: boolean | undefined) => {
   const isProduction =
     import.meta.env.PROD || import.meta.env.MODE === 'production';
 
@@ -8,5 +8,3 @@ const debugMessage = (message: string, debug: boolean | undefined) => {
 
   console.log(message);
 };
-
-export default debugMessage;

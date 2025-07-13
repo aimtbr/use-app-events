@@ -1,5 +1,5 @@
 import { notifyEventListeners } from '$';
-import { verifyMessage } from './api';
+import { verifyMessage } from './utils/verifyMessage';
 import { BroadcastMessage } from './types';
 
 let broadcastChannel: BroadcastChannel | null = null;

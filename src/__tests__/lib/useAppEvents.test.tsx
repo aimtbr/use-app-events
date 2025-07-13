@@ -1,4 +1,4 @@
-import { createMessage } from '$broadcast/api';
+import { createMessage } from '$broadcast/utils/createMessage';
 import { heap, options, useAppEvents } from '$';
 import { renderHook } from '@testing-library/react';
 
@@ -318,8 +318,8 @@ describe('useAppEvents', () => {
     const sender = renderHook(() => useAppEvents<EventType>());
 
     const broadcastMessageSpy = jest.spyOn(
-      await import('$broadcast/api/broadcastMessage'),
-      'default'
+      await import('$broadcast/broadcastMessage'),
+      'broadcastMessage'
     );
 
     const notifyEventListenersSpy = jest.spyOn(
@@ -380,8 +380,8 @@ describe('useAppEvents', () => {
     const sender = renderHook(() => useAppEvents<EventType>());
 
     const broadcastMessageSpy = jest.spyOn(
-      await import('$broadcast/api/broadcastMessage'),
-      'default'
+      await import('$broadcast/broadcastMessage'),
+      'broadcastMessage'
     );
 
     const notifyEventListenersSpy = jest.spyOn(
@@ -426,8 +426,8 @@ describe('useAppEvents', () => {
     const sender = renderHook(() => useAppEvents<EventType>());
 
     const broadcastMessageSpy = jest.spyOn(
-      await import('$broadcast/api/broadcastMessage'),
-      'default'
+      await import('$broadcast/broadcastMessage'),
+      'broadcastMessage'
     );
 
     const notifyEventListenersSpy = jest.spyOn(

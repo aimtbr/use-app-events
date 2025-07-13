@@ -1,4 +1,4 @@
-import { base_createNotifyEventListeners } from '$base/notifyEventListeners';
+import { base_createNotifyEventListeners } from '$base/notifyEventListeners/notifyEventListeners';
 
 const createNotifyEventListeners = base_createNotifyEventListeners;
 
