@@ -10,7 +10,7 @@ import {
 
 /** The `notifyEventListeners` factory. */
 export const base_createNotifyEventListeners = <EventType extends string>(
-  options?: BaseNotifyEventListenersOptions
+  options?: BaseNotifyEventListenersOptions,
 ): BaseNotifyEventListeners<EventType> => {
   const { debug: localDebug, scopeKey } = options || {};
 
@@ -22,7 +22,7 @@ export const base_createNotifyEventListeners = <EventType extends string>(
   const notifyEventListeners: BaseNotifyEventListeners<EventType> = (
     eventTypeOrTypes,
     payload,
-    broadcast = globalOptions.broadcast
+    broadcast = globalOptions.broadcast,
   ) => {
     const debug = localDebug ?? globalOptions.debug;
 
@@ -39,7 +39,7 @@ export const base_createNotifyEventListeners = <EventType extends string>(
       // DEBUG
       debugMessage(
         `[EVENT-OCCURRED]${instanceId} Notified listeners of the ${eventType} event type about an event with a payload of type ${typeof payload}.`,
-        debug
+        debug,
       );
 
       const ignoredEventGroups = new Set();
@@ -48,7 +48,7 @@ export const base_createNotifyEventListeners = <EventType extends string>(
       heap.eventListeners.forEach((listener) => {
         if (listener.eventType === eventType) {
           const isEventGroupIgnoredAlready = ignoredEventGroups.has(
-            listener.eventGroupId
+            listener.eventGroupId,
           );
 
           const isEventIgnoredAlready =

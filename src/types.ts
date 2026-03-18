@@ -1,14 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Listener<Type extends string, P = any> = {
+export type Listener<Type extends string> = {
   /** Event type the listener is waiting for. */
   eventType: Type;
 
   /** Function to call on event. */
-  callback:
-    | Callback<void>
-    | Callback<P>
-    | AsyncCallback<void>
-    | AsyncCallback<P>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  callback: (...args: any[]) => void | Promise<void>;
 
   /** Unique identifier of the context in which the listener was created. */
   scopeKey?: string;
@@ -27,16 +24,8 @@ export type Listener<Type extends string, P = any> = {
   hasBeenCalled?: boolean;
 };
 
-export type Callback<P = void, R = void> = P extends void
-  ? () => R
-  : P extends [infer A, ...infer Rest] // tuple args
-  ? (...args: [A, ...Rest]) => R
-  : P extends [] // array args
-  ? (...args: P[]) => R
-  : (arg: P) => R;
-
-export type AsyncCallback<P = void, R = Promise<void>> = Callback<P, R>;
-
+/** Event types used by the service. */
+export type ServiceEventType<EventType extends string> = `${EventType}_INIT`;
 export type Extend<Source, Target> = Exclude<Source, keyof Target> & Target;
 
-export type CleanupFunction = Callback;
+export type CleanupFunction = () => void;

@@ -4,3 +4,4 @@ export { default as options } from './lib/options';
 export { default as notifyEventListeners } from './lib/notifyEventListeners';
 export { default as listenForEvents } from './lib/listenForEvents';
 export { default as useAppEvents } from './lib/useAppEvents/useAppEvents';
+export { default as useGlobal } from './lib/useGlobal/useGlobal';

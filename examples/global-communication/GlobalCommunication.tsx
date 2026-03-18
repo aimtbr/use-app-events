@@ -1,5 +1,5 @@
-import { useAppEvents } from '$';
 import { useRef, useState } from 'react';
+import { useAppEvents } from '$';
 import { EventType } from '../constants';
 
 /**
@@ -68,7 +68,7 @@ function BrotherComponent() {
   const notifyRelatives = () => {
     notifyEventListeners(
       EventType.JOHN_RELATIVES,
-      "Hello everyone, let's meet tomorrow!"
+      "Hello everyone, let's meet tomorrow!",
     );
   };
 

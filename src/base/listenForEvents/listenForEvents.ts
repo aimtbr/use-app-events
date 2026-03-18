@@ -7,7 +7,7 @@ import globalOptions from '$lib/options';
 
 /** The `listenForEvents` factory. */
 export const base_createListenForEvents = <EventType extends string>(
-  options?: BaseListenForEventsOptions
+  options?: BaseListenForEventsOptions,
 ): BaseListenForEvents<EventType> => {
   const { debug: localDebug, scopeKey, shouldBeCalledOnce } = options || {};
 
@@ -17,7 +17,7 @@ export const base_createListenForEvents = <EventType extends string>(
 
   const listenForEvents: BaseListenForEvents<EventType> = function (
     eventTypeOrTypes,
-    callback
+    callback,
   ): CleanupFunction {
     const debug = localDebug ?? globalOptions.debug;
 
@@ -48,7 +48,7 @@ export const base_createListenForEvents = <EventType extends string>(
             listener.eventType === eventType &&
             listener.callback.toString() === callback.toString()
           );
-        }
+        },
       );
 
       const newListener: Listener<EventType> = {
@@ -74,7 +74,7 @@ export const base_createListenForEvents = <EventType extends string>(
         // DEBUG
         debugMessage(
           `[SUBSCRIPTION]${instanceId} Re-subscribed for the "${eventType}" event type.`,
-          debug
+          debug,
         );
 
         heap.eventListeners = [...heap.eventListeners];
@@ -86,7 +86,7 @@ export const base_createListenForEvents = <EventType extends string>(
         // DEBUG
         debugMessage(
           `[SUBSCRIPTION]${instanceId} Subscribed for the "${eventType}" event type.`,
-          debug
+          debug,
         );
 
         heap.eventListeners = [...heap.eventListeners, newListener];
@@ -97,7 +97,7 @@ export const base_createListenForEvents = <EventType extends string>(
 
     const unlisten: CleanupFunction = () => {
       heap.eventListeners = heap.eventListeners.filter(
-        (listener) => !createdListeners.includes(listener)
+        (listener) => !createdListeners.includes(listener),
       );
     };
 

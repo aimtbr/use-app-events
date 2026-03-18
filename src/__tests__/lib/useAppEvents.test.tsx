@@ -17,7 +17,7 @@ describe('useAppEvents', () => {
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners(EventType.A, message);
@@ -30,18 +30,18 @@ describe('useAppEvents', () => {
 
     const listenForEventsSpy = jest.spyOn(
       recipient.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
     const listenForEventsCallback = jest.fn();
 
     recipient.result.current.listenForEvents(
       EventType.A,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
 
     expect(listenForEventsSpy).toHaveBeenCalledWith(
       EventType.A,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
     expect(listenForEventsCallback).not.toHaveBeenCalled();
   });
@@ -54,17 +54,17 @@ describe('useAppEvents', () => {
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
     const listenForEventsSpy = jest.spyOn(
       recipient.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
     const listenForEventsCallback = jest.fn();
 
     recipient.result.current.listenForEvents(
       EventType.A,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
 
     sender.result.current.notifyEventListeners(EventType.A, message);
@@ -72,7 +72,7 @@ describe('useAppEvents', () => {
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(EventType.A, message);
     expect(listenForEventsSpy).toHaveBeenCalledWith(
       EventType.A,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
     expect(listenForEventsCallback).toHaveBeenCalledWith(message);
   });
@@ -86,17 +86,17 @@ describe('useAppEvents', () => {
 
     const spyNotifyEventListeners = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     const spyListenForEventA = jest.spyOn(
       recipientA.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
 
     const spyListenForEventB = jest.spyOn(
       recipientB.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
     const mockListenForEventACallback = jest.fn();
     const mockListenForEventBCallback = jest.fn();
@@ -104,12 +104,12 @@ describe('useAppEvents', () => {
     // Recipient A is listening for event A
     recipientA.result.current.listenForEvents(
       EventType.A,
-      mockListenForEventACallback
+      mockListenForEventACallback,
     );
     // Recipient B is listening for event B
     recipientB.result.current.listenForEvents(
       EventType.B,
-      mockListenForEventBCallback
+      mockListenForEventBCallback,
     );
 
     sender.result.current.notifyEventListeners(EventType.B, message);
@@ -120,7 +120,7 @@ describe('useAppEvents', () => {
     // Test if Recipient A successfully subscribed for event A
     expect(spyListenForEventA).toHaveBeenCalledWith(
       EventType.A,
-      mockListenForEventACallback
+      mockListenForEventACallback,
     );
 
     // Test if Recipient A didn't receive any event
@@ -129,7 +129,7 @@ describe('useAppEvents', () => {
     // Test if Recipient B successfully subscribed for event B
     expect(spyListenForEventB).toHaveBeenCalledWith(
       EventType.B,
-      mockListenForEventBCallback
+      mockListenForEventBCallback,
     );
 
     // Test if Recipient B successfully received and processed event B
@@ -152,14 +152,14 @@ describe('useAppEvents', () => {
 
     const listenForEventsSpy = jest.spyOn(
       recipient.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
     const listenForEventsCallback = jest.fn();
 
     // Listen for 3 events at once
     recipient.result.current.listenForEvents(
       listenedEventGroup,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
 
     // Send 4 events
@@ -171,23 +171,23 @@ describe('useAppEvents', () => {
 
     expect(listenForEventsSpy).toHaveBeenCalledWith(
       listenedEventGroup,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
     expect(listenForEventsCallback).toHaveBeenCalledTimes(3);
     expect(listenForEventsCallback).toHaveBeenNthCalledWith(
       1,
       EventType.A,
-      messageA
+      messageA,
     );
     expect(listenForEventsCallback).toHaveBeenNthCalledWith(
       2,
       EventType.B,
-      messageB
+      messageB,
     );
     expect(listenForEventsCallback).toHaveBeenNthCalledWith(
       3,
       EventType.C,
-      messageC
+      messageC,
     );
   });
 
@@ -198,7 +198,7 @@ describe('useAppEvents', () => {
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners(EventType.A, payload);
@@ -212,7 +212,7 @@ describe('useAppEvents', () => {
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners(EventType.A);
@@ -228,18 +228,18 @@ describe('useAppEvents', () => {
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners(
       [EventType.A, EventType.B],
-      payload
+      payload,
     );
 
     expect(notifyEventListenersSpy).toHaveBeenCalledTimes(1);
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(
       [EventType.A, EventType.B],
-      payload
+      payload,
     );
   });
 
@@ -248,7 +248,7 @@ describe('useAppEvents', () => {
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners([EventType.A, EventType.B]);
@@ -285,7 +285,7 @@ describe('useAppEvents', () => {
     console.Console.prototype.log = mockConsoleLog;
 
     const instance = renderHook(() =>
-      useAppEvents<EventType>({ debug: false })
+      useAppEvents<EventType>({ debug: false }),
     );
 
     // 2. Subscribe for the event
@@ -319,12 +319,12 @@ describe('useAppEvents', () => {
 
     const broadcastMessageSpy = jest.spyOn(
       await import('$broadcast/broadcastMessage'),
-      'broadcastMessage'
+      'broadcastMessage',
     );
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners(EventType.A);
@@ -332,7 +332,7 @@ describe('useAppEvents', () => {
     sender.result.current.notifyEventListeners([EventType.A, EventType.B]);
     sender.result.current.notifyEventListeners(
       [EventType.A, EventType.B],
-      payload
+      payload,
     );
 
     expect(notifyEventListenersSpy).toHaveBeenCalledTimes(4);
@@ -344,33 +344,33 @@ describe('useAppEvents', () => {
     ]);
     expect(notifyEventListenersSpy).toHaveBeenCalledWith(
       [EventType.A, EventType.B],
-      payload
+      payload,
     );
 
     expect(broadcastMessageSpy).toHaveBeenCalledTimes(6);
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       1,
-      createMessage(EventType.A)
+      createMessage(EventType.A),
     );
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       2,
-      createMessage(EventType.B, payload)
+      createMessage(EventType.B, payload),
     );
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       3,
-      createMessage(EventType.A)
+      createMessage(EventType.A),
     );
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       4,
-      createMessage(EventType.B)
+      createMessage(EventType.B),
     );
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       5,
-      createMessage(EventType.A, payload)
+      createMessage(EventType.A, payload),
     );
     expect(broadcastMessageSpy).toHaveBeenNthCalledWith(
       6,
-      createMessage(EventType.B, payload)
+      createMessage(EventType.B, payload),
     );
   });
 
@@ -381,12 +381,12 @@ describe('useAppEvents', () => {
 
     const broadcastMessageSpy = jest.spyOn(
       await import('$broadcast/broadcastMessage'),
-      'broadcastMessage'
+      'broadcastMessage',
     );
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     sender.result.current.notifyEventListeners(EventType.A, undefined, false);
@@ -394,7 +394,7 @@ describe('useAppEvents', () => {
     sender.result.current.notifyEventListeners(
       [EventType.A, EventType.B],
       payload,
-      false
+      false,
     );
 
     expect(notifyEventListenersSpy).toHaveBeenCalledTimes(3);
@@ -402,19 +402,19 @@ describe('useAppEvents', () => {
       1,
       EventType.A,
       undefined,
-      false
+      false,
     );
     expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
       2,
       EventType.B,
       payload,
-      false
+      false,
     );
     expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
       3,
       [EventType.A, EventType.B],
       payload,
-      false
+      false,
     );
 
     expect(broadcastMessageSpy).not.toHaveBeenCalled();
@@ -427,12 +427,12 @@ describe('useAppEvents', () => {
 
     const broadcastMessageSpy = jest.spyOn(
       await import('$broadcast/broadcastMessage'),
-      'broadcastMessage'
+      'broadcastMessage',
     );
 
     const notifyEventListenersSpy = jest.spyOn(
       sender.result.current,
-      'notifyEventListeners'
+      'notifyEventListeners',
     );
 
     options.broadcast = false;
@@ -441,24 +441,24 @@ describe('useAppEvents', () => {
     sender.result.current.notifyEventListeners(EventType.B, payload);
     sender.result.current.notifyEventListeners(
       [EventType.A, EventType.B],
-      payload
+      payload,
     );
 
     expect(notifyEventListenersSpy).toHaveBeenCalledTimes(3);
     expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
       1,
       EventType.A,
-      undefined
+      undefined,
     );
     expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
       2,
       EventType.B,
-      payload
+      payload,
     );
     expect(notifyEventListenersSpy).toHaveBeenNthCalledWith(
       3,
       [EventType.A, EventType.B],
-      payload
+      payload,
     );
     expect(broadcastMessageSpy).not.toHaveBeenCalled();
   });
@@ -468,13 +468,13 @@ describe('useAppEvents', () => {
 
     const listenForEventsSpy = jest.spyOn(
       recipient.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
     const listenForEventsCallback = () => {};
 
     const unlisten = recipient.result.current.listenForEvents(
       EventType.A,
-      listenForEventsCallback
+      listenForEventsCallback,
     );
 
     const unlistenSpy = jest.fn(unlisten);
@@ -494,13 +494,13 @@ describe('useAppEvents', () => {
 
     const listenForEventsSpy = jest.spyOn(
       recipient.result.current,
-      'listenForEvents'
+      'listenForEvents',
     );
     const listenForEventsCallback = () => {};
 
     const unlisten = recipient.result.current.listenForEvents(
       [EventType.A, EventType.B],
-      listenForEventsCallback
+      listenForEventsCallback,
     );
 
     const unlistenSpy = jest.fn(unlisten);
@@ -529,7 +529,7 @@ describe('useAppEvents', () => {
 
     recipient.result.current.listenForEvents(
       [EventType.A, EventType.B],
-      () => {}
+      () => {},
     );
 
     expect(heap.eventListeners).toHaveLength(2);
@@ -586,21 +586,23 @@ describe('useAppEvents', () => {
     expect(heap.eventListeners[0]).toHaveProperty('hasBeenCalled', true);
     expect(heap.eventListeners[1]).toHaveProperty('hasBeenCalled', true);
     expect(heap.eventListeners[0].eventGroupId).toBe(
-      heap.eventListeners[1].eventGroupId
+      heap.eventListeners[1].eventGroupId,
     );
     expect(heap.eventListeners[0].scopeKey).not.toBeUndefined();
     expect(heap.eventListeners[1].scopeKey).not.toBeUndefined();
     expect(heap.eventListeners[0].scopeKey).toBe(
-      heap.eventListeners[1].scopeKey
+      heap.eventListeners[1].scopeKey,
     );
     expect(listenForEventsCallback).toHaveBeenCalledTimes(1);
     expect(listenForEventsCallback).toHaveBeenCalledWith(
       EventType.A,
-      firstPayload
+      firstPayload,
     );
   });
 
   test('Unlisten all events created by this instance', () => {
+    jest.useFakeTimers();
+
     const hook = renderHook(() => useAppEvents<EventType>());
     const { listenForEvents } = hook.result.current;
 
@@ -612,7 +614,10 @@ describe('useAppEvents', () => {
     expect(heap.eventListeners).toHaveLength(2);
 
     hook.unmount();
+    jest.runAllTimers();
 
     expect(heap.eventListeners).toHaveLength(0);
+
+    jest.useRealTimers();
   });
 });

@@ -71,6 +71,9 @@
     "./useAppEvents": {
       "import": "./dist/lib/useAppEvents/useAppEvents.js"
     },
+    "./useGlobal": {
+      "import": "./dist/lib/useGlobal/useGlobal.js"
+    },
     "./options": {
       "import": "./dist/lib/options.js"
     },
@@ -95,3 +98,4 @@
     "receive"
   ]
 }
+

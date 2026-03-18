@@ -13,7 +13,7 @@ const createListenForEvents = <EventType extends string>(
   ...args: Parameters<typeof base_createListenForEvents>
 ) => {
   const listenForEvents = base_createListenForEvents<EventType>(
-    ...args
+    ...args,
   ) as ListenForEvents<EventType>;
 
   listenForEvents.once = base_createListenForEvents<EventType>({
