@@ -6,11 +6,7 @@ import dts from 'vite-plugin-dts';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        configFile: './babel.config.cjs',
-      },
-    }),
+    react(),
     dts({
       tsconfigPath: path.resolve(__dirname, './tsconfig.app.json'),
       include: ['src'],

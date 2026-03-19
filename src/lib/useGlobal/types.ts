@@ -33,7 +33,7 @@ export type UpdateValueAction<
 };
 
 export type UseGlobalOptions = {
-  /** When true, the debug mode will be enabled, resulting in additional logs. */
+  /** When true, enables a debug mode, resulting in additional logs in non-production environment. */
   debug?: boolean;
   /**
    * When true, the initial value will be set to the latest value retrieved from the older instances of this hook.

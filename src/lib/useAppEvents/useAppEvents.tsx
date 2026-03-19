@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useRef } from 'react';
 import { debugMessage } from '$utils/debugMessage';
 import { generateId } from '$utils/generateId';
@@ -8,7 +7,7 @@ import heap from '$lib/heap';
 import globalOptions from '$lib/options';
 
 type UseAppEventsProps = {
-  /** When true, the debug mode will be enabled, resulting in additional logs. */
+  /** When true, enables a debug mode, resulting in additional logs in non-production environment. */
   debug?: boolean;
 };
 

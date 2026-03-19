@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Listener<Type extends string> = {
   /** Event type the listener is waiting for. */
   eventType: Type;
