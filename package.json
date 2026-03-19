@@ -1,6 +1,6 @@
 {
   "name": "use-app-events",
-  "version": "1.7.9",
+  "version": "1.8.0",
   "author": "Maksym Marchuk",
   "license": "MIT",
   "description": "Create custom events and reactive variables in vanilla JavaScript and React.",

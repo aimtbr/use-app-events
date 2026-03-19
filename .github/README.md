@@ -7,7 +7,7 @@
 
 <br/>
 
-> 📦 Small package (~<u>19 kB</u>)  
+> 📦 Small package (~<u>22 kB</u>)  
 > 🍃 Tree-shakeable  
 > 📝 Well documented  
 > 🛡️ Strictly typed with TypeScript  
